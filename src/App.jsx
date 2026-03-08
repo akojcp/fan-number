@@ -10,7 +10,7 @@ const ARTISTS = [
     posts: [
       { id: "p1", content: "Just finished tracking vocals for the new EP. It's raw and it's real. Can't wait for you all to hear it.", fanOnly: false, date: "Feb 14" },
       { id: "p2", content: "🔒 Behind-the-scenes: The story behind 'Hollow Road' — why I almost scrapped it and what made me keep going.", fanOnly: true, date: "Feb 10" },
-      { id: "p3", content: "🔒 Unreleased demo: 'Glass Season' — first listen for holders only.", fanOnly: true, date: "Feb 5" },
+      { id: "p3", content: "🔒 Unreleased demo: 'Glass Season' — first listen for fans only.", fanOnly: true, date: "Feb 5" },
     ]
   },
   {
@@ -20,7 +20,7 @@ const ARTISTS = [
     coverColor: "#0d0d0d", accentColor: "#00f5d4", spotifyUrl: "#",
     posts: [
       { id: "p4", content: "New single dropping Friday. 4 years in the making. No more hints.", fanOnly: false, date: "Feb 15" },
-      { id: "p5", content: "🔒 Full album stems pack — remix anything you want. Holders only.", fanOnly: true, date: "Feb 8" },
+      { id: "p5", content: "🔒 Full album stems pack — remix anything you want. Fans only.", fanOnly: true, date: "Feb 8" },
     ]
   },
   {
@@ -30,7 +30,7 @@ const ARTISTS = [
     coverColor: "#1b1b1b", accentColor: "#f4a261", spotifyUrl: "#",
     posts: [
       { id: "p6", content: "Tour announcement coming Monday. You already know where we're going 🌴", fanOnly: false, date: "Feb 13" },
-      { id: "p7", content: "🔒 Live set from Havana — full 90 minute recording. Holders only, forever.", fanOnly: true, date: "Feb 1" },
+      { id: "p7", content: "🔒 Live set from Havana — full 90 minute recording. Fans only, forever.", fanOnly: true, date: "Feb 1" },
     ]
   },
   {
@@ -345,7 +345,7 @@ function DiscoverPage({ setPage, userFans }) {
   return (
     <div className="page">
       <div className="section-header"><div className="section-title">FIND YOUR ARTISTS</div></div>
-      <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search artists, genres, cities — claim early, claim low..."
+      <input value={search} onChange={e => setSearch(e.target.value)} placefan="Search artists, genres, cities — claim early, claim low..."
         style={{ width:"100%",background:"var(--surface)",border:"1px solid var(--border)",color:"var(--text)",fontFamily:"var(--font-body)",fontSize:"15px",borderRadius:"8px",padding:"12px 16px",outline:"none",marginBottom:"24px" }} />
       <div className="artist-grid">
         {filtered.map(a => <ArtistCard key={a.id} artist={a} userFans={userFans} onClick={() => setPage({ type:"artist", id:a.id })} />)}
@@ -416,7 +416,7 @@ function ArtistProfilePage({ artistId, setPage, userFans, onSubscribe, onUnsubsc
           </div>
           {!isSubscribed && artist.posts.filter(p => p.fanOnly).length > 0 && (
             <div style={{ background:"var(--surface)",border:"1px solid var(--border)",borderRadius:10,padding:"16px 20px",fontSize:14,color:"var(--muted)" }}>
-              🔒 {artist.posts.filter(p=>p.fanOnly).length} posts for holders only — claim your number to unlock
+              🔒 {artist.posts.filter(p=>p.fanOnly).length} posts for fans only — claim your number to unlock
             </div>
           )}
         </div>
@@ -429,7 +429,7 @@ function ArtistProfilePage({ artistId, setPage, userFans, onSubscribe, onUnsubsc
             <div className="posts-list">
               {artist.posts.map(post => (
                 <div key={post.id} className={`post-card ${post.fanOnly && !isSubscribed ? "post-locked" : ""}`}>
-                  {post.fanOnly && <div className="post-lock-badge">🔒 Holders only</div>}
+                  {post.fanOnly && <div className="post-lock-badge">🔒 Fans only</div>}
                   <span className="post-date">{post.date}</span>
                   <div className="post-content">{post.content}</div>
                 </div>
@@ -642,11 +642,11 @@ function OnboardingPage({ setPage, onArtistCreated }) {
       <div className="onboarding-sub">This is what fans will see on your profile. Make it authentic.</div>
       <div className="field">
         <label>Artist / Band Name</label>
-        <input value={form.artistName} onChange={e => upd("artistName",e.target.value)} placeholder="e.g. Mara Voss, The Midnight, Circuit Bloom" autoFocus />
+        <input value={form.artistName} onChange={e => upd("artistName",e.target.value)} placefan="e.g. Mara Voss, The Midnight, Circuit Bloom" autoFocus />
       </div>
       <div className="field">
         <label>Bio</label>
-        <textarea value={form.bio} onChange={e => upd("bio",e.target.value)} placeholder="Tell fans who you are. A sentence or two is perfect — keep it real." rows={4} maxLength={300} />
+        <textarea value={form.bio} onChange={e => upd("bio",e.target.value)} placefan="Tell fans who you are. A sentence or two is perfect — keep it real." rows={4} maxLength={300} />
         <div className="field-hint">{form.bio.length} / 300 characters</div>
       </div>
     </>,
@@ -664,7 +664,7 @@ function OnboardingPage({ setPage, onArtistCreated }) {
       </div>
       <div className="field" style={{ marginTop:16 }}>
         <label>City</label>
-        <input value={form.city} onChange={e => upd("city",e.target.value)} placeholder="e.g. Nashville, TN" />
+        <input value={form.city} onChange={e => upd("city",e.target.value)} placefan="e.g. Nashville, TN" />
       </div>
     </>,
 
@@ -688,10 +688,10 @@ function OnboardingPage({ setPage, onArtistCreated }) {
       <div style={{ background:"var(--surface2)",border:"1px solid var(--border)",borderRadius:10,padding:"16px 20px",marginTop:16 }}>
         <div style={{ fontSize:11,color:"var(--muted)",fontFamily:"var(--font-mono)",textTransform:"uppercase",letterSpacing:1,marginBottom:12 }}>If fans invest at ${form.price}/month</div>
         <div style={{ display:"flex",justifyContent:"space-between",fontSize:14,color:"var(--muted)",marginBottom:8 }}>
-          <span>100 holders</span><span style={{ color:"var(--text)",fontFamily:"var(--font-mono)" }}>${Math.round(form.price*100*0.88).toLocaleString()}/mo to you</span>
+          <span>100 fans</span><span style={{ color:"var(--text)",fontFamily:"var(--font-mono)" }}>${Math.round(form.price*100*0.88).toLocaleString()}/mo to you</span>
         </div>
         <div style={{ display:"flex",justifyContent:"space-between",fontSize:14,color:"var(--muted)" }}>
-          <span>500 holders</span><span style={{ color:"var(--accent)",fontFamily:"var(--font-mono)",fontWeight:600 }}>${Math.round(form.price*500*0.88).toLocaleString()}/mo to you</span>
+          <span>500 fans</span><span style={{ color:"var(--accent)",fontFamily:"var(--font-mono)",fontWeight:600 }}>${Math.round(form.price*500*0.88).toLocaleString()}/mo to you</span>
         </div>
       </div>
     </>,
@@ -851,7 +851,7 @@ function ArtistLivePage({ artistForm, setPage }) {
               <div style={{ fontSize:13,color:"var(--muted)",marginTop:2 }}>
                 {artistForm.genres.slice(0,2).join(", ")}{artistForm.city?` · ${artistForm.city}`:""}
               </div>
-              <div style={{ fontSize:13,color:"var(--muted)",marginTop:2 }}>${artistForm.price}/month · 0 holders so far</div>
+              <div style={{ fontSize:13,color:"var(--muted)",marginTop:2 }}>${artistForm.price}/month · 0 fans so far</div>
             </div>
           </div>
         )}
@@ -905,7 +905,7 @@ function ArtistDashboardPage({ setPage }) {
       {tab === "overview" && (
         <>
           <div className="metric-grid">
-            <div className="metric-card accent"><div className="metric-val">{artist.fanCount}</div><div className="metric-label">Holders</div></div>
+            <div className="metric-card accent"><div className="metric-val">{artist.fanCount}</div><div className="metric-label">Fans</div></div>
             <div className="metric-card"><div className="metric-val">${mockEarnings.toFixed(0)}</div><div className="metric-label">Monthly Income</div></div>
             <div className="metric-card"><div className="metric-val">{artist.posts.length}</div><div className="metric-label">Posts</div></div>
             <div className="metric-card"><div className="metric-val">88%</div><div className="metric-label">You Keep</div></div>
@@ -922,7 +922,7 @@ function ArtistDashboardPage({ setPage }) {
           <div style={{ background:"var(--surface)",border:"1px solid var(--border)",borderRadius:10,padding:"16px 20px" }}>
             <div style={{ fontFamily:"var(--font-display)",fontSize:18,letterSpacing:1,marginBottom:12 }}>RECENT ACTIVITY</div>
             {[
-              { text:"Fan #312 claimed — new holder joined", time:"2h ago", color:"var(--accent)" },
+              { text:"Fan #312 claimed — new fan joined", time:"2h ago", color:"var(--accent)" },
               { text:"Fan #7 Jordan K. commented on your post", time:"5h ago", color:"var(--accent2)" },
               { text:"Fan #299 Sam W. claimed their number", time:"Yesterday", color:"var(--accent)" },
               { text:"Your post got 47 likes", time:"2 days ago", color:"var(--muted)" },
@@ -940,7 +940,7 @@ function ArtistDashboardPage({ setPage }) {
         <div style={{ background:"var(--surface)",border:"1px solid var(--border)",borderRadius:10,overflow:"hidden" }}>
           <div style={{ padding:"14px 20px",borderBottom:"1px solid var(--border)",display:"flex",justifyContent:"space-between",alignItems:"center" }}>
             <div style={{ fontFamily:"var(--font-display)",fontSize:18,letterSpacing:1 }}>FAN ROSTER</div>
-            <div style={{ fontSize:13,color:"var(--muted)",fontFamily:"var(--font-mono)" }}>{artist.fanCount} holders</div>
+            <div style={{ fontSize:13,color:"var(--muted)",fontFamily:"var(--font-mono)" }}>{artist.fanCount} fans</div>
           </div>
           {[
             { num:1, name:"Jordan K.", initial:"J", since:"Dec 2024", active:true },
@@ -967,11 +967,11 @@ function ArtistDashboardPage({ setPage }) {
       {tab === "posts" && (
         <>
           <div className="post-form">
-            <textarea value={postContent} onChange={e => setPostContent(e.target.value)} placeholder="Share something with your fans..." />
+            <textarea value={postContent} onChange={e => setPostContent(e.target.value)} placefan="Share something with your fans..." />
             <div className="post-form-footer">
               <label className="toggle-label">
                 <div className={`toggle ${isFanOnly?"on":""}`} onClick={() => setIsFanOnly(!isFanOnly)} />
-                Holders only
+                Fans only
               </label>
               <button className="btn btn-primary btn-sm" onClick={handlePost}>Post</button>
             </div>
@@ -979,7 +979,7 @@ function ArtistDashboardPage({ setPage }) {
           <div className="posts-list">
             {posts.map(post => (
               <div key={post.id} className="post-card">
-                {post.fanOnly && <div className="post-lock-badge">🔒 Holders only</div>}
+                {post.fanOnly && <div className="post-lock-badge">🔒 Fans only</div>}
                 <span className="post-date">{post.date}</span>
                 <div className="post-content">{post.content}</div>
               </div>
