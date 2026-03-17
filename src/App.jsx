@@ -197,7 +197,6 @@ const css = `
   .back-btn { background: none; border: none; color: var(--muted); cursor: pointer; font-family: var(--font-body); font-size: 14px; margin-bottom: 24px; display: flex; align-items: center; gap: 6px; padding: 0; }
   .back-btn:hover { color: var(--text); }
 
-  /* FORM */
   .field { margin-bottom: 20px; }
   .field label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 8px; font-family: var(--font-mono); letter-spacing: 1px; text-transform: uppercase; }
   .field input, .field textarea, .field select { width: 100%; background: var(--surface2); border: 1px solid var(--border); color: var(--text); font-family: var(--font-body); font-size: 15px; border-radius: 8px; padding: 12px 14px; outline: none; transition: border-color 0.15s; appearance: none; }
@@ -207,7 +206,6 @@ const css = `
   .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   @media (max-width: 560px) { .field-row { grid-template-columns: 1fr; } }
 
-  /* ONBOARDING */
   .onboarding-wrap { min-height: calc(100vh - 0px); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px 24px; background: var(--bg); }
   .onboarding-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 40px; width: 100%; max-width: 560px; }
   .step-indicator { display: flex; align-items: center; gap: 6px; margin-bottom: 32px; }
@@ -219,11 +217,12 @@ const css = `
   .onboarding-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border); }
 
   .price-options { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
-  .price-opt { background: var(--surface2); border: 2px solid var(--border); border-radius: 10px; padding: 14px 8px; text-align: center; cursor: pointer; transition: all 0.15s; }
+  .price-opt { background: var(--surface2); border: 2px solid var(--border); border-radius: 10px; padding: 14px 8px; text-align: center; cursor: pointer; transition: all 0.15s; position: relative; }
   .price-opt:hover { border-color: #555; }
   .price-opt.selected { border-color: var(--accent); background: rgba(123,47,255,0.08); }
   .price-opt-val { font-family: var(--font-display); font-size: 26px; letter-spacing: 1px; }
   .price-opt-label { font-size: 11px; color: var(--muted); font-family: var(--font-mono); }
+  .price-opt-badge { position: absolute; top: -8px; left: 50%; transform: translateX(-50%); font-size: 9px; font-family: var(--font-mono); color: var(--accent); background: var(--bg); border: 1px solid var(--accent); border-radius: 10px; padding: 1px 6px; letter-spacing: 0.5px; text-transform: uppercase; white-space: nowrap; }
 
   .vibe-grid { display: flex; flex-wrap: wrap; gap: 8px; }
   .vibe-pill { padding: 7px 16px; border-radius: 20px; border: 1px solid var(--border); font-size: 13px; cursor: pointer; transition: all 0.15s; background: var(--surface2); color: var(--muted); user-select: none; }
@@ -237,7 +236,6 @@ const css = `
   .custom-vibe-add { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); font-family: var(--font-body); font-size: 13px; padding: 7px 16px; border-radius: 20px; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
   .custom-vibe-add:hover { border-color: #555; color: var(--text); }
 
-  /* Profile step */
   .photo-upload-row { display: flex; gap: 16px; margin-bottom: 4px; }
   .photo-upload-box { flex: 1; border: 1.5px dashed var(--border); border-radius: 12px; padding: 20px 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: border-color 0.15s; background: var(--surface2); text-align: center; }
   .photo-upload-box:hover { border-color: #555; }
@@ -257,7 +255,8 @@ const css = `
   .link-field { display: flex; flex-direction: column; gap: 4px; }
   .link-field label { font-size: 11px; color: var(--muted); font-family: var(--font-mono); display: flex; align-items: center; gap: 6px; }
   .section-label { font-size: 13px; font-weight: 600; color: var(--text); margin: 18px 0 10px; display: flex; align-items: center; gap: 8px; }
-  .section-label span { font-size: 16px; } { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 28px; text-align: center; }
+  .section-label span { font-size: 16px; }
+  .stripe-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 28px; text-align: center; }
   .stripe-logo { font-family: var(--font-display); font-size: 28px; letter-spacing: 3px; color: #635bff; margin-bottom: 12px; }
   .stripe-desc { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 20px; }
   .stripe-connected { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 14px; background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.25); border-radius: 10px; color: var(--green); font-weight: 600; font-size: 15px; }
@@ -269,7 +268,6 @@ const css = `
   .preview-name { font-family: var(--font-display); font-size: 26px; letter-spacing: 2px; margin-bottom: 4px; }
   .preview-bio { font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 10px; }
 
-  /* ARTIST LANDING */
   .artist-hero { padding: 96px 24px 72px; text-align: center; position: relative; overflow: hidden; }
   .artist-hero::before { content: ''; position: absolute; top: -80px; left: 50%; transform: translateX(-50%); width: 800px; height: 500px; background: radial-gradient(ellipse, rgba(123,47,255,0.12) 0%, transparent 65%); pointer-events: none; }
   .artist-hero-eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
@@ -299,7 +297,6 @@ const css = `
   .quotes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-top: 32px; text-align: left; }
   .quote-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
 
-  /* LIVE CONFIRMATION */
   .live-wrap { min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 40px 24px; background: var(--bg); }
   .live-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 48px 40px; max-width: 520px; width: 100%; text-align: center; }
   .live-icon { font-size: 60px; margin-bottom: 20px; display: block; animation: pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
@@ -317,6 +314,11 @@ const css = `
   .profile-page-avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--surface2); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 36px; color: var(--accent); border: 3px solid var(--accent); flex-shrink: 0; }
   .profile-page-name { font-family: var(--font-display); font-size: 40px; letter-spacing: 2px; }
   .profile-page-sub { font-size: 13px; color: var(--muted); font-family: var(--font-mono); }
+
+  .split-bar { display: flex; height: 8px; border-radius: 4px; overflow: hidden; margin: 12px 0 8px; }
+  .split-bar-artist { background: var(--accent); transition: width 0.3s; }
+  .split-bar-platform { background: var(--border); }
+  .split-labels { display: flex; justify-content: space-between; font-size: 11px; font-family: var(--font-mono); }
 `;
 
 // ─── Shared ───────────────────────────────────────────────────────────────────
@@ -343,7 +345,7 @@ function ArtistCard({ artist, userFans, onClick }) {
         </div>
         <div className="artist-card-footer">
           <div className="fan-badge"><strong>{artist.fanCount.toLocaleString()}</strong> fans</div>
-          <div className="price-tag">${artist.price}/month</div>
+          <div className="price-tag">${artist.price}/mo <span style={{fontSize:10,color:"var(--muted)"}}>+ tax</span></div>
         </div>
       </div>
     </div>
@@ -427,7 +429,7 @@ function ArtistProfilePage({ artistId, setPage, userFans, onSubscribe, onUnsubsc
         </div>
         <div className="profile-stats">
           <div className="stat"><div className="stat-num">{artist.fanCount.toLocaleString()}</div><div className="stat-label">Fans</div></div>
-          <div className="stat"><div className="stat-num">${artist.price}</div><div className="stat-label">Per Month</div></div>
+          <div className="stat"><div className="stat-num">${artist.price}/mo</div><div className="stat-label">Per Month</div></div>
           <div className="stat"><div className="stat-num">{artist.posts.length}</div><div className="stat-label">Posts</div></div>
         </div>
       </div>
@@ -442,7 +444,7 @@ function ArtistProfilePage({ artistId, setPage, userFans, onSubscribe, onUnsubsc
                 <div className="next-fan-number" style={{ color: artist.accentColor }}>#{artist.fanCount + 1}</div>
                 <div className="next-fan-label">Available right now</div>
                 <button className="btn btn-primary" style={{ background:artist.accentColor,width:"100%",fontSize:16 }} onClick={() => onSubscribe(artist)}>
-                  Claim for ${artist.price}/month
+                  Claim for ${artist.price}/mo <span style={{fontSize:12,fontWeight:400,opacity:0.7}}>+ tax</span>
                 </button>
               </>
             ) : (
@@ -567,7 +569,10 @@ function MyProfilePage({ userFans, setPage }) {
 // ─── Artist Landing Page ──────────────────────────────────────────────────────
 function ArtistLandingPage({ setPage }) {
   const [fans, setFans] = useState(150);
-  const monthly = Math.round(fans * 5 * 0.88);
+  const [calcPrice, setCalcPrice] = useState(5);
+  const gross = fans * calcPrice;
+  const platformFee = Math.round(gross * 0.12);
+  const takeHome = gross - platformFee;
   return (
     <div>
       <div className="artist-hero">
@@ -579,7 +584,7 @@ function ArtistLandingPage({ setPage }) {
           <button className="btn btn-secondary" onClick={() => setPage("discover")}>See Examples</button>
         </div>
         <div style={{ marginTop:40,display:"flex",gap:40,justifyContent:"center",flexWrap:"wrap" }}>
-          {[["Free to start","No upfront cost"],["88% to you","Every month, direct deposit"],["Numbers never reset","Fan #1 is gone forever once claimed"]].map(([t,s]) => (
+          {[["Free to start","No upfront cost"],["88% is yours","Every dollar, every month"],["Numbers never reset","Fan #1 is gone forever once claimed"]].map(([t,s]) => (
             <div key={t} style={{ textAlign:"center" }}>
               <div style={{ fontFamily:"var(--font-display)",fontSize:18,letterSpacing:1 }}>{t}</div>
               <div style={{ fontSize:12,color:"var(--muted)",fontFamily:"var(--font-mono)",marginTop:2 }}>{s}</div>
@@ -615,8 +620,8 @@ function ArtistLandingPage({ setPage }) {
             <div>
               <div style={{ fontFamily:"var(--font-mono)",fontSize:11,letterSpacing:3,color:"var(--accent)",textTransform:"uppercase",marginBottom:12 }}>What You Earn</div>
               <div className="earnings-title">REAL MONEY.<br />EVERY MONTH.</div>
-              <div className="earnings-desc">Each fan holding a number is investing in your career — $4, $5, $8 a month. Small individually. Transformative together. And as your numbers rise, new fans feel the urgency to claim before it's too late.</div>
-              <div>
+              <div className="earnings-desc">Fans pay a simple monthly price to hold their number. You keep 88% — deposited directly to your bank via Stripe. The other 12% keeps FAN# running. That's it. No hidden fees, no middlemen.</div>
+              <div style={{ marginBottom: 20 }}>
                 <div style={{ fontSize:13,color:"var(--muted)",marginBottom:8,fontFamily:"var(--font-mono)" }}>FANS: {fans}</div>
                 <input type="range" min={10} max={1000} value={fans} onChange={e => setFans(Number(e.target.value))}
                   style={{ width:"100%",accentColor:"var(--accent)",cursor:"pointer" }} />
@@ -624,22 +629,43 @@ function ArtistLandingPage({ setPage }) {
                   <span>10</span><span>1,000</span>
                 </div>
               </div>
+              <div>
+                <div style={{ fontSize:13,color:"var(--muted)",marginBottom:8,fontFamily:"var(--font-mono)" }}>YOUR PRICE: ${calcPrice}/mo</div>
+                <input type="range" min={3} max={25} value={calcPrice} onChange={e => setCalcPrice(Number(e.target.value))}
+                  style={{ width:"100%",accentColor:"var(--accent)",cursor:"pointer" }} />
+                <div style={{ display:"flex",justifyContent:"space-between",fontSize:11,color:"var(--muted)",fontFamily:"var(--font-mono)",marginTop:4 }}>
+                  <span>$3 (min)</span><span>$25</span>
+                </div>
+              </div>
             </div>
             <div className="earnings-calc">
-              {[
-                { label:"Fans", val: fans.toString() },
-                { label:"Price per fan", val:"$5 / mo" },
-                { label:"Gross", val:`$${(fans*5).toLocaleString()}` },
-                { label:"Platform fee (12%)", val:`−$${Math.round(fans*5*0.12).toLocaleString()}`, muted:true },
-              ].map(r => (
-                <div key={r.label} className="calc-row">
-                  <div className="calc-label">{r.label}</div>
-                  <div className="calc-val" style={r.muted ? {color:"var(--muted)"} : {}}>{r.val}</div>
-                </div>
-              ))}
               <div className="calc-row">
+                <div className="calc-label">Fans</div>
+                <div className="calc-val">{fans.toLocaleString()}</div>
+              </div>
+              <div className="calc-row">
+                <div className="calc-label">Price per fan</div>
+                <div className="calc-val">${calcPrice}/mo</div>
+              </div>
+              <div className="calc-row">
+                <div className="calc-label">Gross monthly</div>
+                <div className="calc-val">${gross.toLocaleString()}</div>
+              </div>
+              <div className="calc-row">
+                <div className="calc-label">Platform fee (12%)</div>
+                <div className="calc-val" style={{color:"var(--muted)"}}>−${platformFee.toLocaleString()}</div>
+              </div>
+              <div className="calc-row" style={{ borderBottom:"none",paddingTop:14 }}>
                 <div className="calc-label" style={{ fontWeight:600,color:"var(--text)" }}>You take home</div>
-                <div className="calc-val highlight">${monthly.toLocaleString()}/mo</div>
+                <div className="calc-val highlight">${takeHome.toLocaleString()}/mo</div>
+              </div>
+              <div className="split-bar">
+                <div className="split-bar-artist" style={{ width:"88%" }} />
+                <div className="split-bar-platform" style={{ width:"12%" }} />
+              </div>
+              <div className="split-labels">
+                <span style={{ color:"var(--accent)" }}>88% yours</span>
+                <span style={{ color:"var(--muted)" }}>12% platform</span>
               </div>
             </div>
           </div>
@@ -684,7 +710,7 @@ function ArtistLandingPage({ setPage }) {
   );
 }
 
-// ─── Onboarding Page (single scrolling page) ─────────────────────────────────
+// ─── Onboarding Page ──────────────────────────────────────────────────────────
 function OnboardingPage({ setPage, onArtistCreated }) {
   const [form, setForm] = useState({
     artistName:"", bio:"", genres:[], vibes:[], customVibe:"", city:"", price:5,
@@ -701,6 +727,12 @@ function OnboardingPage({ setPage, onArtistCreated }) {
     const v = form.customVibe.trim();
     if (!v || form.vibes.includes(v) || form.vibes.length >= 3) return;
     setForm(f => ({ ...f, vibes: [...f.vibes, v], customVibe: "" }));
+  };
+
+  const handlePriceChange = (val) => {
+    const num = Number(val);
+    if (num >= 3 || val === "") upd("price", num || 3);
+    else upd("price", 3);
   };
 
   const canGoLive = form.artistName.trim().length >= 2 && form.bio.trim().length >= 10;
@@ -765,24 +797,24 @@ function OnboardingPage({ setPage, onArtistCreated }) {
         )}
       </div>
 
-      {/* ── Section 3: Vibe ─── */}
+      {/* ── Section 3: Vibe & City ─── */}
       <div style={{ background:"var(--surface)",border:"1px solid var(--border)",borderRadius:16,padding:28,marginBottom:16 }}>
-        <SectionHeader emoji="✨" title="Your Vibe" subtitle="Pick up to 3 that describe your style." />
+        <SectionHeader emoji="✨" title="Vibe & City" subtitle="Pick up to 3 vibes that describe your style." />
         <div className="vibe-grid" style={{ marginBottom:12 }}>
           {VIBES.map(v => (
             <div key={v} className={`vibe-pill ${form.vibes.includes(v)?"selected":""} ${!form.vibes.includes(v)&&form.vibes.length>=3?"disabled":""}`}
               onClick={() => toggleVibe(v)}>{v}</div>
           ))}
         </div>
-        <div className="field-hint" style={{ marginBottom:12 }}>{form.vibes.length}/3 selected</div>
-        <div className="custom-vibe-row">
+        <div className="field-hint" style={{ marginBottom:10 }}>{form.vibes.length}/3 selected</div>
+        <div className="custom-vibe-row" style={{ marginBottom: form.vibes.length > 0 ? 10 : 0 }}>
           <input className="custom-vibe-input" value={form.customVibe} onChange={e => upd("customVibe",e.target.value)}
             onKeyDown={e => e.key==="Enter" && addCustomVibe()}
             placeholder="Or type your own vibe..." disabled={form.vibes.length >= 3} />
           <button className="custom-vibe-add" onClick={addCustomVibe} disabled={form.vibes.length >= 3}>+ Add</button>
         </div>
         {form.vibes.length > 0 && (
-          <div style={{ display:"flex",gap:8,flexWrap:"wrap",marginTop:12 }}>
+          <div style={{ display:"flex",gap:8,flexWrap:"wrap",marginBottom:16 }}>
             {form.vibes.map(v => (
               <div key={v} className="vibe-pill selected" style={{ display:"flex",alignItems:"center",gap:6 }}>
                 {v}<span onClick={() => toggleVibe(v)} style={{ cursor:"pointer",opacity:0.6,fontSize:11 }}>✕</span>
@@ -790,14 +822,17 @@ function OnboardingPage({ setPage, onArtistCreated }) {
             ))}
           </div>
         )}
+        <div className="field" style={{ marginBottom:0 }}>
+          <label>City</label>
+          <input value={form.city} onChange={e => upd("city",e.target.value)} placeholder="e.g. Nashville, TN" />
+        </div>
       </div>
 
       {/* ── Section 4: Your Profile ─── */}
       <div style={{ background:"var(--surface)",border:"1px solid var(--border)",borderRadius:16,padding:28,marginBottom:16 }}>
         <SectionHeader emoji="🎭" title="Your Profile" subtitle="Photos, history, and links. All optional." optional />
 
-        {/* Photos */}
-        <div className="photo-upload-row" style={{ marginBottom:24 }}>
+        <div className="photo-upload-row" style={{ marginBottom:16 }}>
           <div className="photo-upload-box" style={{ maxWidth:110 }} onClick={() => document.getElementById('profilePhotoInput').click()}>
             {form.profilePhoto
               ? <img src={form.profilePhoto} alt="profile" style={{width:80,height:80,borderRadius:'50%',objectFit:'cover'}} />
@@ -814,136 +849,125 @@ function OnboardingPage({ setPage, onArtistCreated }) {
           </div>
         </div>
 
-        {/* Colors */}
-        <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginBottom:24 }}>
-          <div className="field" style={{ marginBottom:0 }}>
-            <label>Cover Color</label>
-            <div style={{ display:"flex",gap:8,flexWrap:"wrap",marginTop:4 }}>
-              {COLORS.map(c => <div key={c} onClick={() => upd("coverColor",c)} style={{ width:34,height:34,borderRadius:8,background:c,border:`2px solid ${form.coverColor===c?"var(--accent)":"var(--border)"}`,cursor:"pointer",transition:"border-color 0.15s" }} />)}
-            </div>
-          </div>
-          <div className="field" style={{ marginBottom:0 }}>
-            <label>Accent Color</label>
-            <div style={{ display:"flex",gap:8,flexWrap:"wrap",marginTop:4 }}>
-              {ACCENTS.map(c => <div key={c} onClick={() => upd("accentColor",c)} style={{ width:34,height:34,borderRadius:8,background:c,border:`2px solid ${form.accentColor===c?"var(--accent)":"transparent"}`,cursor:"pointer",transition:"border-color 0.15s" }} />)}
-            </div>
-          </div>
-        </div>
-
-        {/* City / Date Formed / Label */}
-        <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginBottom:24 }}>
-          <div className="field" style={{ marginBottom:0 }}>
-            <label>City</label>
-            <input value={form.city} onChange={e => upd("city",e.target.value)} placeholder="e.g. Nashville, TN" />
-          </div>
-          <div className="field" style={{ marginBottom:0 }}>
-            <label>Date Formed</label>
-            <input value={form.dateFormed} onChange={e => upd('dateFormed',e.target.value)} placeholder="e.g. 2018 or March 2019" />
-          </div>
-        </div>
-        <div className="field" style={{ marginBottom:24 }}>
-          <label>Label</label>
-          <input value={form.label} onChange={e => upd('label',e.target.value)} placeholder="e.g. Independent" />
-        </div>
-
-        {/* Band Members */}
-        <div style={{ borderTop:"1px solid var(--border)",paddingTop:20,marginBottom:20 }}>
-          <div style={{ fontFamily:"var(--font-mono)",fontSize:11,letterSpacing:2,color:"var(--muted)",textTransform:"uppercase",marginBottom:14 }}>Band Members</div>
-          {form.bandMembers.map((m,i) => (
-            <div key={i} style={{ display:"grid",gridTemplateColumns:"1fr 1fr auto",gap:10,marginBottom:10,alignItems:"center" }}>
-              <div className="field" style={{ marginBottom:0 }}>
-                {i === 0 && <label style={{ marginBottom:6 }}>Name</label>}
-                <input value={m.name} onChange={e => { const arr=[...form.bandMembers]; arr[i]={...arr[i],name:e.target.value}; upd('bandMembers',arr); }} placeholder="Name" />
-              </div>
-              <div className="field" style={{ marginBottom:0 }}>
-                {i === 0 && <label style={{ marginBottom:6 }}>Role</label>}
-                <input value={m.role} onChange={e => { const arr=[...form.bandMembers]; arr[i]={...arr[i],role:e.target.value}; upd('bandMembers',arr); }} placeholder="e.g. Guitar, Vocals" />
-              </div>
-              <div style={{ paddingTop: i === 0 ? 22 : 0 }}>
-                {form.bandMembers.length > 1 && (
-                  <button onClick={() => upd('bandMembers', form.bandMembers.filter((_,j)=>j!==i))}
-                    style={{ background:"none",border:"1px solid var(--border)",color:"var(--muted)",width:34,height:34,borderRadius:8,cursor:"pointer",fontSize:14,display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.15s" }}
-                    onMouseEnter={e => { e.target.style.borderColor="#ff4444"; e.target.style.color="#ff4444"; }}
-                    onMouseLeave={e => { e.target.style.borderColor="var(--border)"; e.target.style.color="var(--muted)"; }}>✕</button>
-                )}
-              </div>
-            </div>
-          ))}
-          <button onClick={() => upd('bandMembers',[...form.bandMembers,{name:'',role:''}])}
-            style={{ background:"none",border:"1px solid var(--border)",color:"var(--muted)",fontFamily:"var(--font-body)",fontSize:13,padding:"7px 16px",borderRadius:8,cursor:"pointer",transition:"all 0.15s",marginTop:2 }}
-            onMouseEnter={e => e.target.style.borderColor="#555"}
-            onMouseLeave={e => e.target.style.borderColor="var(--border)"}>
-            + Add Member
-          </button>
-        </div>
-
-        {/* Fan Benefits */}
-        <div style={{ borderTop:"1px solid var(--border)",paddingTop:20,marginBottom:20 }}>
-          <div style={{ fontFamily:"var(--font-mono)",fontSize:11,letterSpacing:2,color:"var(--muted)",textTransform:"uppercase",marginBottom:4 }}>Fan Benefits</div>
-          <div style={{ fontSize:13,color:"var(--muted)",marginBottom:14 }}>What do fans get for supporting you? e.g. "Early access to new releases", "Annual private show for top 100 fans"</div>
-          {form.fanBenefits.map((b,i) => (
-            <div key={i} style={{ display:"grid",gridTemplateColumns:"1fr auto",gap:10,marginBottom:10,alignItems:"center" }}>
-              <div className="field" style={{ marginBottom:0 }}>
-                <input value={b} onChange={e => { const arr=[...form.fanBenefits]; arr[i]=e.target.value; upd('fanBenefits',arr); }} placeholder={`e.g. Early access to new releases`} />
-              </div>
-              {form.fanBenefits.length > 1 && (
-                <button onClick={() => upd('fanBenefits', form.fanBenefits.filter((_,j)=>j!==i))}
-                  style={{ background:"none",border:"1px solid var(--border)",color:"var(--muted)",width:34,height:34,borderRadius:8,cursor:"pointer",fontSize:14,display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.15s" }}
-                  onMouseEnter={e => { e.target.style.borderColor="#ff4444"; e.target.style.color="#ff4444"; }}
-                  onMouseLeave={e => { e.target.style.borderColor="var(--border)"; e.target.style.color="var(--muted)"; }}>✕</button>
-              )}
-            </div>
-          ))}
-          <button onClick={() => upd('fanBenefits',[...form.fanBenefits,''])}
-            style={{ background:"none",border:"1px solid var(--border)",color:"var(--muted)",fontFamily:"var(--font-body)",fontSize:13,padding:"7px 16px",borderRadius:8,cursor:"pointer",transition:"all 0.15s",marginTop:2 }}
-            onMouseEnter={e => e.target.style.borderColor="#555"}
-            onMouseLeave={e => e.target.style.borderColor="var(--border)"}>
-            + Add Benefit
-          </button>
-        </div>
-
-        {/* Streaming & Social Links */}
-        <div style={{ borderTop:"1px solid var(--border)",paddingTop:20 }}>
-          <div style={{ fontFamily:"var(--font-mono)",fontSize:11,letterSpacing:2,color:"var(--muted)",textTransform:"uppercase",marginBottom:14 }}>Streaming & Social Links</div>
-          <div style={{ display:"flex",flexDirection:"column",gap:10 }}>
-            {[
-              {key:'spotify',    label:'Spotify',     placeholder:'https://open.spotify.com/...'},
-              {key:'appleMusic', label:'Apple Music',  placeholder:'https://music.apple.com/...'},
-              {key:'youtube',    label:'YouTube',      placeholder:'https://youtube.com/...'},
-              {key:'instagram',  label:'Instagram',    placeholder:'https://instagram.com/...'},
-              {key:'tiktok',     label:'TikTok',       placeholder:'https://tiktok.com/@...'},
-              {key:'x',          label:'X / Twitter',  placeholder:'https://x.com/...'},
-              {key:'soundcloud', label:'SoundCloud',   placeholder:'https://soundcloud.com/...'},
-              {key:'bandcamp',   label:'Bandcamp',     placeholder:'https://bandcamp.com/...'},
-            ].map(({key,label,placeholder}) => (
-              <div key={key} style={{ display:"grid",gridTemplateColumns:"120px 1fr",gap:0,alignItems:"stretch",borderRadius:8,overflow:"hidden",border:"1px solid var(--border)" }}>
-                <div style={{ background:"var(--surface2)",padding:"0 14px",display:"flex",alignItems:"center",fontSize:12,fontFamily:"var(--font-mono)",color:"var(--muted)",borderRight:"1px solid var(--border)",whiteSpace:"nowrap" }}>{label}</div>
-                <input value={form.links[key]} onChange={e => upd('links',{...form.links,[key]:e.target.value})} placeholder={placeholder}
-                  style={{ background:"var(--surface2)",border:"none",color:"var(--text)",fontFamily:"var(--font-body)",fontSize:13,padding:"10px 14px",outline:"none",width:"100%" }} />
+        <div className="field">
+          <label>Profile Icon</label>
+          <div style={{ display:"flex",gap:10,flexWrap:"wrap" }}>
+            {EMOJIS.map(e => (
+              <div key={e} onClick={() => upd("profileEmoji",e)}
+                style={{ width:44,height:44,borderRadius:"50%",background:"var(--surface2)",border:`2px solid ${form.profileEmoji===e?"var(--accent)":"var(--border)"}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,cursor:"pointer",transition:"all 0.15s" }}>
+                {e}
               </div>
             ))}
           </div>
         </div>
-      </div>
+        <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginBottom:16 }}>
+          <div className="field" style={{ marginBottom:0 }}>
+            <label>Cover Color</label>
+            <div style={{ display:"flex",gap:8,flexWrap:"wrap" }}>
+              {COLORS.map(c => <div key={c} onClick={() => upd("coverColor",c)} style={{ width:34,height:34,borderRadius:8,background:c,border:`2px solid ${form.coverColor===c?"var(--accent)":"transparent"}`,cursor:"pointer" }} />)}
+            </div>
+          </div>
+          <div className="field" style={{ marginBottom:0 }}>
+            <label>Accent Color</label>
+            <div style={{ display:"flex",gap:8,flexWrap:"wrap" }}>
+              {ACCENTS.map(c => <div key={c} onClick={() => upd("accentColor",c)} style={{ width:34,height:34,borderRadius:8,background:c,border:`2px solid ${form.accentColor===c?"var(--accent)":"transparent"}`,cursor:"pointer" }} />)}
+            </div>
+          </div>
+        </div>
 
+        <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginBottom:16 }}>
+          <div className="field" style={{ marginBottom:0 }}>
+            <label>Date Formed</label>
+            <input value={form.dateFormed} onChange={e => upd('dateFormed',e.target.value)} placeholder="e.g. 2018 or March 2019" />
+          </div>
+          <div className="field" style={{ marginBottom:0 }}>
+            <label>Label</label>
+            <input value={form.label} onChange={e => upd('label',e.target.value)} placeholder="e.g. Independent" />
+          </div>
+        </div>
+
+        <div className="section-label"><span>👥</span> Band Members</div>
+        {form.bandMembers.map((m,i) => (
+          <div key={i} className="member-row">
+            <input value={m.name} onChange={e => { const arr=[...form.bandMembers]; arr[i]={...arr[i],name:e.target.value}; upd('bandMembers',arr); }} placeholder="Name" />
+            <input value={m.role} onChange={e => { const arr=[...form.bandMembers]; arr[i]={...arr[i],role:e.target.value}; upd('bandMembers',arr); }} placeholder="Role (e.g. Guitar)" />
+            {form.bandMembers.length > 1 && <button className="icon-btn danger" onClick={() => upd('bandMembers', form.bandMembers.filter((_,j)=>j!==i))}>✕</button>}
+          </div>
+        ))}
+        <button className="icon-btn" style={{width:'auto',padding:'0 14px',fontSize:13,display:'flex',alignItems:'center',gap:6,marginBottom:16}}
+          onClick={() => upd('bandMembers',[...form.bandMembers,{name:'',role:''}])}>+ Add Member</button>
+
+        <div className="section-label"><span>🎁</span> Fan Benefits</div>
+        <div style={{fontSize:12,color:"var(--muted)",marginBottom:10}}>What do fans get? e.g. "Early access to new releases"</div>
+        {form.fanBenefits.map((b,i) => (
+          <div key={i} className="benefit-row">
+            <input value={b} onChange={e => { const arr=[...form.fanBenefits]; arr[i]=e.target.value; upd('fanBenefits',arr); }} placeholder={`Benefit ${i+1}`} />
+            {form.fanBenefits.length > 1 && <button className="icon-btn danger" onClick={() => upd('fanBenefits', form.fanBenefits.filter((_,j)=>j!==i))}>✕</button>}
+          </div>
+        ))}
+        <button className="icon-btn" style={{width:'auto',padding:'0 14px',fontSize:13,display:'flex',alignItems:'center',gap:6,marginBottom:16}}
+          onClick={() => upd('fanBenefits',[...form.fanBenefits,''])}>+ Add Benefit</button>
+
+        <div className="section-label"><span>🔗</span> Streaming & Social Links</div>
+        <div className="links-grid">
+          {[
+            {key:'spotify',label:'Spotify',icon:'🎵',placeholder:'open.spotify.com/...'},
+            {key:'appleMusic',label:'Apple Music',icon:'🍎',placeholder:'music.apple.com/...'},
+            {key:'youtube',label:'YouTube',icon:'▶️',placeholder:'youtube.com/...'},
+            {key:'instagram',label:'Instagram',icon:'📸',placeholder:'instagram.com/...'},
+            {key:'tiktok',label:'TikTok',icon:'🎶',placeholder:'tiktok.com/@...'},
+            {key:'x',label:'X / Twitter',icon:'✖️',placeholder:'x.com/...'},
+            {key:'soundcloud',label:'SoundCloud',icon:'☁️',placeholder:'soundcloud.com/...'},
+            {key:'bandcamp',label:'Bandcamp',icon:'🏕️',placeholder:'bandcamp.com/...'},
+          ].map(({key,label,icon,placeholder}) => (
+            <div key={key} className="link-field">
+              <label><span>{icon}</span>{label}</label>
+              <input value={form.links[key]} onChange={e => upd('links',{...form.links,[key]:e.target.value})} placeholder={placeholder} style={{fontSize:12}} />
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* ── Section 5: Price ─── */}
       <div style={{ background:"var(--surface)",border:"1px solid var(--border)",borderRadius:16,padding:28,marginBottom:16 }}>
-        <SectionHeader emoji="💰" title="Set Your Price" subtitle="What fans pay each month to hold their number. Most artists start at $5." />
+        <SectionHeader emoji="💰" title="Set Your Price" subtitle="What fans pay each month to hold their number. You keep 88% of every dollar." />
         <div className="price-options">
-          {[3,5,8,10].map(p => (
-            <div key={p} className={`price-opt ${form.price===p?"selected":""}`} onClick={() => upd("price",p)}>
-              <div className="price-opt-val">${p}</div>
+          {[
+            { val:3, label:"min" },
+            { val:5, label:"popular" },
+            { val:8, label:null },
+            { val:10, label:null },
+          ].map(p => (
+            <div key={p.val} className={`price-opt ${form.price===p.val?"selected":""}`} onClick={() => upd("price",p.val)}>
+              {p.label && <div className="price-opt-badge">{p.label}</div>}
+              <div className="price-opt-val">${p.val}</div>
               <div className="price-opt-label">per mo</div>
             </div>
           ))}
         </div>
         <div className="field" style={{ marginBottom:8 }}>
           <label>Custom price</label>
-          <input type="number" min={3} max={100} value={form.price} onChange={e => upd("price",Number(e.target.value))} style={{ maxWidth:120 }} />
-          <div className="field-hint">Minimum $3/month · You keep 88%</div>
+          <input type="number" min={3} max={100} value={form.price}
+            onChange={e => handlePriceChange(e.target.value)}
+            onBlur={() => { if (form.price < 3) upd("price", 3); }}
+            style={{ maxWidth:120 }} />
+          <div className="field-hint">Minimum $3/month · Fans pay this + applicable tax</div>
         </div>
-        <div style={{ display:"flex",gap:24,padding:"12px 0",borderTop:"1px solid var(--border)",marginTop:8 }}>
+        <div style={{ background:"var(--surface2)",border:"1px solid var(--border)",borderRadius:10,padding:"14px 16px",marginTop:12 }}>
+          <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8 }}>
+            <span style={{ fontSize:13,color:"var(--muted)" }}>You earn per fan</span>
+            <span style={{ fontFamily:"var(--font-mono)",fontSize:15,color:"var(--accent)",fontWeight:600 }}>${(form.price * 0.88).toFixed(2)}/mo</span>
+          </div>
+          <div className="split-bar">
+            <div className="split-bar-artist" style={{ width:"88%" }} />
+            <div className="split-bar-platform" style={{ width:"12%" }} />
+          </div>
+          <div className="split-labels">
+            <span style={{ color:"var(--accent)" }}>${(form.price * 0.88).toFixed(2)} to you (88%)</span>
+            <span style={{ color:"var(--muted)" }}>${(form.price * 0.12).toFixed(2)} platform (12%)</span>
+          </div>
+        </div>
+        <div style={{ display:"flex",gap:24,padding:"12px 0",borderTop:"1px solid var(--border)",marginTop:16 }}>
           <div style={{ fontSize:13,color:"var(--muted)" }}>At 100 fans: <span style={{ color:"var(--text)",fontFamily:"var(--font-mono)" }}>${Math.round(form.price*100*0.88).toLocaleString()}/mo</span></div>
           <div style={{ fontSize:13,color:"var(--muted)" }}>At 500 fans: <span style={{ color:"var(--accent)",fontFamily:"var(--font-mono)",fontWeight:600 }}>${Math.round(form.price*500*0.88).toLocaleString()}/mo</span></div>
         </div>
@@ -987,7 +1011,6 @@ function OnboardingPage({ setPage, onArtistCreated }) {
   );
 }
 
-
 // ─── You're Live Page ─────────────────────────────────────────────────────────
 function ArtistLivePage({ artistForm, setPage }) {
   const [copied, setCopied] = useState(false);
@@ -1010,7 +1033,7 @@ function ArtistLivePage({ artistForm, setPage }) {
                 {artistForm.genres.length > 0 && <span style={{color:"var(--accent)"}}>{artistForm.genres.slice(0,2).join(" · ")} · </span>}
                 {artistForm.vibes.slice(0,2).join(" · ")}{artistForm.city?` · ${artistForm.city}`:""}
               </div>
-              <div style={{ fontSize:13,color:"var(--muted)",marginTop:2 }}>${artistForm.price}/month · 0 fans so far</div>
+              <div style={{ fontSize:13,color:"var(--muted)",marginTop:2 }}>${artistForm.price}/mo + tax · 0 fans so far</div>
             </div>
           </div>
         )}
@@ -1054,7 +1077,8 @@ function ArtistDashboardPage({ setPage }) {
         <img src={artist.image} alt={artist.name} className="dashboard-avatar" />
         <div>
           <div className="dashboard-title">ARTIST DASHBOARD</div>
-          <div className="dashboard-sub">Welcome back, {artist.name}</div>        </div>
+          <div className="dashboard-sub">Welcome back, {artist.name}</div>
+        </div>
       </div>
       <div className="tabs">
         <button className={`tab ${tab==="overview"?"active":""}`} onClick={() => setTab("overview")}>Overview</button>
@@ -1065,15 +1089,15 @@ function ArtistDashboardPage({ setPage }) {
         <>
           <div className="metric-grid">
             <div className="metric-card accent"><div className="metric-val">{artist.fanCount}</div><div className="metric-label">Fans</div></div>
-            <div className="metric-card"><div className="metric-val">${mockEarnings.toFixed(0)}</div><div className="metric-label">Monthly Income</div></div>
+            <div className="metric-card"><div className="metric-val">${mockEarnings.toFixed(0)}</div><div className="metric-label">Monthly (88%)</div></div>
             <div className="metric-card"><div className="metric-val">{artist.posts.length}</div><div className="metric-label">Posts</div></div>
-            <div className="metric-card"><div className="metric-val">88%</div><div className="metric-label">You Keep</div></div>
+            <div className="metric-card"><div className="metric-val">${artist.price}/mo</div><div className="metric-label">Fan Price</div></div>
           </div>
           <div style={{ background:"var(--surface)",border:"1px solid var(--border)",borderRadius:10,padding:"16px 20px",marginBottom:24 }}>
             <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center" }}>
               <div>
                 <div style={{ fontWeight:600,marginBottom:4 }}>{artist.name}</div>
-                <div style={{ fontSize:13,color:"var(--muted)" }}>{artist.genre} · ${artist.price}/month</div>
+                <div style={{ fontSize:13,color:"var(--muted)" }}>{artist.genre} · ${artist.price}/mo · You keep ${(artist.price * 0.88).toFixed(2)}</div>
               </div>
               <button className="btn btn-secondary btn-sm" onClick={() => setPage({ type:"artist",id:artist.id })}>View Public Page →</button>
             </div>
@@ -1126,7 +1150,7 @@ function ArtistDashboardPage({ setPage }) {
       {tab === "posts" && (
         <>
           <div className="post-form">
-            <textarea value={postContent} onChange={e => setPostContent(e.target.value)} placefan="Share something with your fans..." />
+            <textarea value={postContent} onChange={e => setPostContent(e.target.value)} placeholder="Share something with your fans..." />
             <div className="post-form-footer">
               <label className="toggle-label">
                 <div className={`toggle ${isFanOnly?"on":""}`} onClick={() => setIsFanOnly(!isFanOnly)} />
