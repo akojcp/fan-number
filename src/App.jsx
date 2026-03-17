@@ -765,24 +765,24 @@ function OnboardingPage({ setPage, onArtistCreated }) {
         )}
       </div>
 
-      {/* ── Section 3: Vibe & City ─── */}
+      {/* ── Section 3: Vibe ─── */}
       <div style={{ background:"var(--surface)",border:"1px solid var(--border)",borderRadius:16,padding:28,marginBottom:16 }}>
-        <SectionHeader emoji="✨" title="Vibe & City" subtitle="Pick up to 3 vibes that describe your style." />
+        <SectionHeader emoji="✨" title="Your Vibe" subtitle="Pick up to 3 that describe your style." />
         <div className="vibe-grid" style={{ marginBottom:12 }}>
           {VIBES.map(v => (
             <div key={v} className={`vibe-pill ${form.vibes.includes(v)?"selected":""} ${!form.vibes.includes(v)&&form.vibes.length>=3?"disabled":""}`}
               onClick={() => toggleVibe(v)}>{v}</div>
           ))}
         </div>
-        <div className="field-hint" style={{ marginBottom:10 }}>{form.vibes.length}/3 selected</div>
-        <div className="custom-vibe-row" style={{ marginBottom: form.vibes.length > 0 ? 10 : 0 }}>
+        <div className="field-hint" style={{ marginBottom:12 }}>{form.vibes.length}/3 selected</div>
+        <div className="custom-vibe-row">
           <input className="custom-vibe-input" value={form.customVibe} onChange={e => upd("customVibe",e.target.value)}
             onKeyDown={e => e.key==="Enter" && addCustomVibe()}
             placeholder="Or type your own vibe..." disabled={form.vibes.length >= 3} />
           <button className="custom-vibe-add" onClick={addCustomVibe} disabled={form.vibes.length >= 3}>+ Add</button>
         </div>
         {form.vibes.length > 0 && (
-          <div style={{ display:"flex",gap:8,flexWrap:"wrap",marginBottom:16 }}>
+          <div style={{ display:"flex",gap:8,flexWrap:"wrap",marginTop:12 }}>
             {form.vibes.map(v => (
               <div key={v} className="vibe-pill selected" style={{ display:"flex",alignItems:"center",gap:6 }}>
                 {v}<span onClick={() => toggleVibe(v)} style={{ cursor:"pointer",opacity:0.6,fontSize:11 }}>✕</span>
@@ -790,10 +790,6 @@ function OnboardingPage({ setPage, onArtistCreated }) {
             ))}
           </div>
         )}
-        <div className="field" style={{ marginBottom:0 }}>
-          <label>City</label>
-          <input value={form.city} onChange={e => upd("city",e.target.value)} placeholder="e.g. Nashville, TN" />
-        </div>
       </div>
 
       {/* ── Section 4: Your Profile ─── */}
@@ -801,7 +797,7 @@ function OnboardingPage({ setPage, onArtistCreated }) {
         <SectionHeader emoji="🎭" title="Your Profile" subtitle="Photos, history, and links. All optional." optional />
 
         {/* Photos */}
-        <div className="photo-upload-row" style={{ marginBottom:16 }}>
+        <div className="photo-upload-row" style={{ marginBottom:24 }}>
           <div className="photo-upload-box" style={{ maxWidth:110 }} onClick={() => document.getElementById('profilePhotoInput').click()}>
             {form.profilePhoto
               ? <img src={form.profilePhoto} alt="profile" style={{width:80,height:80,borderRadius:'50%',objectFit:'cover'}} />
@@ -818,89 +814,118 @@ function OnboardingPage({ setPage, onArtistCreated }) {
           </div>
         </div>
 
-        {/* Profile Icon & Colors */}
-        <div className="field">
-          <label>Profile Icon</label>
-          <div style={{ display:"flex",gap:10,flexWrap:"wrap" }}>
-            {EMOJIS.map(e => (
-              <div key={e} onClick={() => upd("profileEmoji",e)}
-                style={{ width:44,height:44,borderRadius:"50%",background:"var(--surface2)",border:`2px solid ${form.profileEmoji===e?"var(--accent)":"var(--border)"}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,cursor:"pointer",transition:"all 0.15s" }}>
-                {e}
-              </div>
-            ))}
-          </div>
-        </div>
-        <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginBottom:16 }}>
+        {/* Colors */}
+        <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginBottom:24 }}>
           <div className="field" style={{ marginBottom:0 }}>
             <label>Cover Color</label>
-            <div style={{ display:"flex",gap:8,flexWrap:"wrap" }}>
-              {COLORS.map(c => <div key={c} onClick={() => upd("coverColor",c)} style={{ width:34,height:34,borderRadius:8,background:c,border:`2px solid ${form.coverColor===c?"var(--accent)":"transparent"}`,cursor:"pointer" }} />)}
+            <div style={{ display:"flex",gap:8,flexWrap:"wrap",marginTop:4 }}>
+              {COLORS.map(c => <div key={c} onClick={() => upd("coverColor",c)} style={{ width:34,height:34,borderRadius:8,background:c,border:`2px solid ${form.coverColor===c?"var(--accent)":"var(--border)"}`,cursor:"pointer",transition:"border-color 0.15s" }} />)}
             </div>
           </div>
           <div className="field" style={{ marginBottom:0 }}>
             <label>Accent Color</label>
-            <div style={{ display:"flex",gap:8,flexWrap:"wrap" }}>
-              {ACCENTS.map(c => <div key={c} onClick={() => upd("accentColor",c)} style={{ width:34,height:34,borderRadius:8,background:c,border:`2px solid ${form.accentColor===c?"var(--accent)":"transparent"}`,cursor:"pointer" }} />)}
+            <div style={{ display:"flex",gap:8,flexWrap:"wrap",marginTop:4 }}>
+              {ACCENTS.map(c => <div key={c} onClick={() => upd("accentColor",c)} style={{ width:34,height:34,borderRadius:8,background:c,border:`2px solid ${form.accentColor===c?"var(--accent)":"transparent"}`,cursor:"pointer",transition:"border-color 0.15s" }} />)}
             </div>
           </div>
         </div>
 
-        {/* Date Formed + Label */}
-        <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginBottom:16 }}>
+        {/* City / Date Formed / Label */}
+        <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginBottom:24 }}>
+          <div className="field" style={{ marginBottom:0 }}>
+            <label>City</label>
+            <input value={form.city} onChange={e => upd("city",e.target.value)} placeholder="e.g. Nashville, TN" />
+          </div>
           <div className="field" style={{ marginBottom:0 }}>
             <label>Date Formed</label>
             <input value={form.dateFormed} onChange={e => upd('dateFormed',e.target.value)} placeholder="e.g. 2018 or March 2019" />
           </div>
-          <div className="field" style={{ marginBottom:0 }}>
-            <label>Label</label>
-            <input value={form.label} onChange={e => upd('label',e.target.value)} placeholder="e.g. Independent" />
-          </div>
+        </div>
+        <div className="field" style={{ marginBottom:24 }}>
+          <label>Label</label>
+          <input value={form.label} onChange={e => upd('label',e.target.value)} placeholder="e.g. Independent" />
         </div>
 
         {/* Band Members */}
-        <div className="section-label"><span>👥</span> Band Members</div>
-        {form.bandMembers.map((m,i) => (
-          <div key={i} className="member-row">
-            <input value={m.name} onChange={e => { const arr=[...form.bandMembers]; arr[i]={...arr[i],name:e.target.value}; upd('bandMembers',arr); }} placeholder="Name" />
-            <input value={m.role} onChange={e => { const arr=[...form.bandMembers]; arr[i]={...arr[i],role:e.target.value}; upd('bandMembers',arr); }} placeholder="Role (e.g. Guitar)" />
-            {form.bandMembers.length > 1 && <button className="icon-btn danger" onClick={() => upd('bandMembers', form.bandMembers.filter((_,j)=>j!==i))}>✕</button>}
-          </div>
-        ))}
-        <button className="icon-btn" style={{width:'auto',padding:'0 14px',fontSize:13,display:'flex',alignItems:'center',gap:6,marginBottom:16}}
-          onClick={() => upd('bandMembers',[...form.bandMembers,{name:'',role:''}])}>+ Add Member</button>
-
-        {/* Fan Benefits */}
-        <div className="section-label"><span>🎁</span> Fan Benefits</div>
-        <div style={{fontSize:12,color:"var(--muted)",marginBottom:10}}>What do fans get? e.g. "Early access to new releases"</div>
-        {form.fanBenefits.map((b,i) => (
-          <div key={i} className="benefit-row">
-            <input value={b} onChange={e => { const arr=[...form.fanBenefits]; arr[i]=e.target.value; upd('fanBenefits',arr); }} placeholder={`Benefit ${i+1}`} />
-            {form.fanBenefits.length > 1 && <button className="icon-btn danger" onClick={() => upd('fanBenefits', form.fanBenefits.filter((_,j)=>j!==i))}>✕</button>}
-          </div>
-        ))}
-        <button className="icon-btn" style={{width:'auto',padding:'0 14px',fontSize:13,display:'flex',alignItems:'center',gap:6,marginBottom:16}}
-          onClick={() => upd('fanBenefits',[...form.fanBenefits,''])}>+ Add Benefit</button>
-
-        {/* Links */}
-        <div className="section-label"><span>🔗</span> Streaming & Social Links</div>
-        <div className="links-grid">
-          {[
-            {key:'spotify',label:'Spotify',icon:'🎵',placeholder:'open.spotify.com/...'},
-            {key:'appleMusic',label:'Apple Music',icon:'🍎',placeholder:'music.apple.com/...'},
-            {key:'youtube',label:'YouTube',icon:'▶️',placeholder:'youtube.com/...'},
-            {key:'instagram',label:'Instagram',icon:'📸',placeholder:'instagram.com/...'},
-            {key:'tiktok',label:'TikTok',icon:'🎶',placeholder:'tiktok.com/@...'},
-            {key:'x',label:'X / Twitter',icon:'✖️',placeholder:'x.com/...'},
-            {key:'soundcloud',label:'SoundCloud',icon:'☁️',placeholder:'soundcloud.com/...'},
-            {key:'bandcamp',label:'Bandcamp',icon:'🏕️',placeholder:'bandcamp.com/...'},
-          ].map(({key,label,icon,placeholder}) => (
-            <div key={key} className="link-field">
-              <label><span>{icon}</span>{label}</label>
-              <input value={form.links[key]} onChange={e => upd('links',{...form.links,[key]:e.target.value})} placeholder={placeholder} style={{fontSize:12}} />
+        <div style={{ borderTop:"1px solid var(--border)",paddingTop:20,marginBottom:20 }}>
+          <div style={{ fontFamily:"var(--font-mono)",fontSize:11,letterSpacing:2,color:"var(--muted)",textTransform:"uppercase",marginBottom:14 }}>Band Members</div>
+          {form.bandMembers.map((m,i) => (
+            <div key={i} style={{ display:"grid",gridTemplateColumns:"1fr 1fr auto",gap:10,marginBottom:10,alignItems:"center" }}>
+              <div className="field" style={{ marginBottom:0 }}>
+                {i === 0 && <label style={{ marginBottom:6 }}>Name</label>}
+                <input value={m.name} onChange={e => { const arr=[...form.bandMembers]; arr[i]={...arr[i],name:e.target.value}; upd('bandMembers',arr); }} placeholder="Name" />
+              </div>
+              <div className="field" style={{ marginBottom:0 }}>
+                {i === 0 && <label style={{ marginBottom:6 }}>Role</label>}
+                <input value={m.role} onChange={e => { const arr=[...form.bandMembers]; arr[i]={...arr[i],role:e.target.value}; upd('bandMembers',arr); }} placeholder="e.g. Guitar, Vocals" />
+              </div>
+              <div style={{ paddingTop: i === 0 ? 22 : 0 }}>
+                {form.bandMembers.length > 1 && (
+                  <button onClick={() => upd('bandMembers', form.bandMembers.filter((_,j)=>j!==i))}
+                    style={{ background:"none",border:"1px solid var(--border)",color:"var(--muted)",width:34,height:34,borderRadius:8,cursor:"pointer",fontSize:14,display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.15s" }}
+                    onMouseEnter={e => { e.target.style.borderColor="#ff4444"; e.target.style.color="#ff4444"; }}
+                    onMouseLeave={e => { e.target.style.borderColor="var(--border)"; e.target.style.color="var(--muted)"; }}>✕</button>
+                )}
+              </div>
             </div>
           ))}
+          <button onClick={() => upd('bandMembers',[...form.bandMembers,{name:'',role:''}])}
+            style={{ background:"none",border:"1px solid var(--border)",color:"var(--muted)",fontFamily:"var(--font-body)",fontSize:13,padding:"7px 16px",borderRadius:8,cursor:"pointer",transition:"all 0.15s",marginTop:2 }}
+            onMouseEnter={e => e.target.style.borderColor="#555"}
+            onMouseLeave={e => e.target.style.borderColor="var(--border)"}>
+            + Add Member
+          </button>
+        </div>
+
+        {/* Fan Benefits */}
+        <div style={{ borderTop:"1px solid var(--border)",paddingTop:20,marginBottom:20 }}>
+          <div style={{ fontFamily:"var(--font-mono)",fontSize:11,letterSpacing:2,color:"var(--muted)",textTransform:"uppercase",marginBottom:4 }}>Fan Benefits</div>
+          <div style={{ fontSize:13,color:"var(--muted)",marginBottom:14 }}>What do fans get for supporting you? e.g. "Early access to new releases", "Annual private show for top 100 fans"</div>
+          {form.fanBenefits.map((b,i) => (
+            <div key={i} style={{ display:"grid",gridTemplateColumns:"1fr auto",gap:10,marginBottom:10,alignItems:"center" }}>
+              <div className="field" style={{ marginBottom:0 }}>
+                <input value={b} onChange={e => { const arr=[...form.fanBenefits]; arr[i]=e.target.value; upd('fanBenefits',arr); }} placeholder={`e.g. Early access to new releases`} />
+              </div>
+              {form.fanBenefits.length > 1 && (
+                <button onClick={() => upd('fanBenefits', form.fanBenefits.filter((_,j)=>j!==i))}
+                  style={{ background:"none",border:"1px solid var(--border)",color:"var(--muted)",width:34,height:34,borderRadius:8,cursor:"pointer",fontSize:14,display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.15s" }}
+                  onMouseEnter={e => { e.target.style.borderColor="#ff4444"; e.target.style.color="#ff4444"; }}
+                  onMouseLeave={e => { e.target.style.borderColor="var(--border)"; e.target.style.color="var(--muted)"; }}>✕</button>
+              )}
+            </div>
+          ))}
+          <button onClick={() => upd('fanBenefits',[...form.fanBenefits,''])}
+            style={{ background:"none",border:"1px solid var(--border)",color:"var(--muted)",fontFamily:"var(--font-body)",fontSize:13,padding:"7px 16px",borderRadius:8,cursor:"pointer",transition:"all 0.15s",marginTop:2 }}
+            onMouseEnter={e => e.target.style.borderColor="#555"}
+            onMouseLeave={e => e.target.style.borderColor="var(--border)"}>
+            + Add Benefit
+          </button>
+        </div>
+
+        {/* Streaming & Social Links */}
+        <div style={{ borderTop:"1px solid var(--border)",paddingTop:20 }}>
+          <div style={{ fontFamily:"var(--font-mono)",fontSize:11,letterSpacing:2,color:"var(--muted)",textTransform:"uppercase",marginBottom:14 }}>Streaming & Social Links</div>
+          <div style={{ display:"flex",flexDirection:"column",gap:10 }}>
+            {[
+              {key:'spotify',    label:'Spotify',     placeholder:'https://open.spotify.com/...'},
+              {key:'appleMusic', label:'Apple Music',  placeholder:'https://music.apple.com/...'},
+              {key:'youtube',    label:'YouTube',      placeholder:'https://youtube.com/...'},
+              {key:'instagram',  label:'Instagram',    placeholder:'https://instagram.com/...'},
+              {key:'tiktok',     label:'TikTok',       placeholder:'https://tiktok.com/@...'},
+              {key:'x',          label:'X / Twitter',  placeholder:'https://x.com/...'},
+              {key:'soundcloud', label:'SoundCloud',   placeholder:'https://soundcloud.com/...'},
+              {key:'bandcamp',   label:'Bandcamp',     placeholder:'https://bandcamp.com/...'},
+            ].map(({key,label,placeholder}) => (
+              <div key={key} style={{ display:"grid",gridTemplateColumns:"120px 1fr",gap:0,alignItems:"stretch",borderRadius:8,overflow:"hidden",border:"1px solid var(--border)" }}>
+                <div style={{ background:"var(--surface2)",padding:"0 14px",display:"flex",alignItems:"center",fontSize:12,fontFamily:"var(--font-mono)",color:"var(--muted)",borderRight:"1px solid var(--border)",whiteSpace:"nowrap" }}>{label}</div>
+                <input value={form.links[key]} onChange={e => upd('links',{...form.links,[key]:e.target.value})} placeholder={placeholder}
+                  style={{ background:"var(--surface2)",border:"none",color:"var(--text)",fontFamily:"var(--font-body)",fontSize:13,padding:"10px 14px",outline:"none",width:"100%" }} />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
+
 
       {/* ── Section 5: Price ─── */}
       <div style={{ background:"var(--surface)",border:"1px solid var(--border)",borderRadius:16,padding:28,marginBottom:16 }}>
