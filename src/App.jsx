@@ -56,7 +56,6 @@ const GENRES = [
   "Electronic","Ambient","Hip-Hop","R&B / Soul","Jazz","Blues","Country","Americana",
   "Latin","Reggae","Classical","Experimental","Stand-up Comedy","Sketch Comedy","Improv"
 ];
-const STEP_LABELS = ["Basic Info","Genre","Vibe & City","Your Profile","Set Price","Your Look","Connect Stripe","Preview"];
 
 // ─── Styles ───────────────────────────────────────────────────────────────────
 const css = `
@@ -685,9 +684,8 @@ function ArtistLandingPage({ setPage }) {
   );
 }
 
-// ─── Onboarding Wizard ────────────────────────────────────────────────────────
+// ─── Onboarding Page (single scrolling page) ─────────────────────────────────
 function OnboardingPage({ setPage, onArtistCreated }) {
-  const [step, setStep] = useState(0);
   const [form, setForm] = useState({
     artistName:"", bio:"", genres:[], vibes:[], customVibe:"", city:"", price:5,
     coverColor:"#1a1a2e", accentColor:"#e94560", profileEmoji:"🎸", stripeConnected:false,
@@ -705,377 +703,265 @@ function OnboardingPage({ setPage, onArtistCreated }) {
     setForm(f => ({ ...f, vibes: [...f.vibes, v], customVibe: "" }));
   };
 
-  const canAdvance = () => {
-    if (step === 0) return form.artistName.trim().length >= 2 && form.bio.trim().length >= 10;
-    if (step === 1) return true; // genre optional
-    if (step === 2) return form.vibes.length >= 1 && form.city.trim().length >= 2;
-    if (step === 3) return true; // Your Profile all optional
-    return true;
-  };
+  const canGoLive = form.artistName.trim().length >= 2 && form.bio.trim().length >= 10;
 
   const EMOJIS = ["🎸","🎹","🎤","🥁","🎷","🎻","🎺","🎵","🎶","🎧"];
   const COLORS = ["#1a1a2e","#0d0d0d","#1b1b1b","#12001f","#0a1628","#1a0a00","#001a0a","#1a1500"];
   const ACCENTS = ["#e94560","#00f5d4","#f4a261","#c77dff","#ff9f1c","#4cc9f0","#f72585","#7fff00"];
 
-  const steps = [
-    // 0: Basic Info
-    <>
-      <div className="onboarding-title">Tell us about you</div>
-      <div className="onboarding-sub">This is what fans will see on your profile. Make it authentic.</div>
-      <div className="field">
-        <label>Artist / Band Name</label>
-        <input value={form.artistName} onChange={e => upd("artistName",e.target.value)} placefan="e.g. Mara Voss, The Midnight, Circuit Bloom" autoFocus />
+  const SectionHeader = ({ emoji, title, subtitle, optional }) => (
+    <div style={{ marginBottom:20 }}>
+      <div style={{ display:"flex",alignItems:"center",gap:10,marginBottom:4 }}>
+        <span style={{ fontSize:18 }}>{emoji}</span>
+        <div style={{ fontFamily:"var(--font-display)",fontSize:22,letterSpacing:1 }}>{title}</div>
+        {optional && <span style={{ fontSize:11,color:"var(--muted)",fontFamily:"var(--font-mono)",background:"var(--surface2)",border:"1px solid var(--border)",borderRadius:20,padding:"2px 8px" }}>optional</span>}
       </div>
-      <div className="field">
-        <label>Bio</label>
-        <textarea value={form.bio} onChange={e => upd("bio",e.target.value)} placefan="Tell fans who you are. A sentence or two is perfect — keep it real." rows={4} maxLength={300} />
-        <div className="field-hint">{form.bio.length} / 300 characters</div>
-      </div>
-    </>,
+      {subtitle && <div style={{ fontSize:13,color:"var(--muted)",paddingLeft:28 }}>{subtitle}</div>}
+    </div>
+  );
 
-    // 1: Genre (optional)
-    <>
-      <div className="onboarding-title">Pick your genre</div>
-      <div className="onboarding-sub">Optional — up to 3. Skip this if it doesn't apply to you.</div>
-      <div className="field">
-        <label>Genre — pick up to 3 <span style={{color:"var(--muted)",fontWeight:400,fontSize:12}}>(optional)</span></label>
+  return (
+    <div style={{ maxWidth:680,margin:"0 auto",padding:"40px 24px 80px" }}>
+      <button style={{ background:"none",border:"none",color:"var(--muted)",cursor:"pointer",fontFamily:"var(--font-body)",fontSize:14,padding:0,marginBottom:32,display:"flex",alignItems:"center",gap:6 }}
+        onClick={() => setPage("artist-landing")}>← Back</button>
+
+      <div style={{ marginBottom:40 }}>
+        <div style={{ fontFamily:"var(--font-mono)",fontSize:11,letterSpacing:3,color:"var(--accent)",textTransform:"uppercase",marginBottom:8 }}>Create your artist page</div>
+        <div style={{ fontFamily:"var(--font-display)",fontSize:48,letterSpacing:3,lineHeight:1,marginBottom:12 }}>BUILD YOUR<br /><span style={{ color:"var(--accent)" }}>PAGE</span></div>
+        <div style={{ fontSize:15,color:"var(--muted)",lineHeight:1.6 }}>Fill out what you can — you can always edit everything after launch. Only your name and bio are required to go live.</div>
+      </div>
+
+      {/* ── Section 1: Basic Info ─── */}
+      <div style={{ background:"var(--surface)",border:"1px solid var(--border)",borderRadius:16,padding:28,marginBottom:16 }}>
+        <SectionHeader emoji="✏️" title="Basic Info" subtitle="This is the first thing fans see." />
+        <div className="field">
+          <label>Artist / Band Name <span style={{ color:"var(--accent)",fontSize:11 }}>*</span></label>
+          <input value={form.artistName} onChange={e => upd("artistName",e.target.value)} placeholder="e.g. Mara Voss, The Midnight, Circuit Bloom" autoFocus />
+        </div>
+        <div className="field" style={{ marginBottom:0 }}>
+          <label>Bio <span style={{ color:"var(--accent)",fontSize:11 }}>*</span></label>
+          <textarea value={form.bio} onChange={e => upd("bio",e.target.value)} placeholder="Tell fans who you are. A sentence or two is perfect — keep it real." rows={4} maxLength={300} />
+          <div className="field-hint">{form.bio.length} / 300 characters</div>
+        </div>
+      </div>
+
+      {/* ── Section 2: Genre ─── */}
+      <div style={{ background:"var(--surface)",border:"1px solid var(--border)",borderRadius:16,padding:28,marginBottom:16 }}>
+        <SectionHeader emoji="🎵" title="Genre" subtitle="Pick up to 3. Skip if it doesn't apply." optional />
         <div className="vibe-grid">
           {GENRES.map(g => (
-            <div key={g}
-              className={`vibe-pill ${form.genres.includes(g)?"selected":""} ${!form.genres.includes(g)&&form.genres.length>=3?"disabled":""}`}
-              onClick={() => toggleGenre(g)}>
-              {g}
-            </div>
+            <div key={g} className={`vibe-pill ${form.genres.includes(g)?"selected":""} ${!form.genres.includes(g)&&form.genres.length>=3?"disabled":""}`}
+              onClick={() => toggleGenre(g)}>{g}</div>
           ))}
         </div>
-        <div className="field-hint">{form.genres.length}/3 selected</div>
-      </div>
-      {form.genres.length > 0 && (
-        <div style={{ display:"flex",flexWrap:"wrap",gap:8,marginTop:4 }}>
-          {form.genres.map(g => (
-            <div key={g} className="vibe-pill selected" style={{ display:"flex",alignItems:"center",gap:6 }}>
-              {g}
-              <span onClick={() => toggleGenre(g)} style={{ cursor:"pointer",opacity:0.6,fontSize:11 }}>✕</span>
-            </div>
-          ))}
-        </div>
-      )}
-    </>,
-
-    // 2: Vibe & City
-    <>
-      <div className="onboarding-title">What's your vibe?</div>
-      <div className="onboarding-sub">Pick up to 3 that describe your style. These help fans find you.</div>
-      <div className="field">
-        <label>Vibe — pick up to 3</label>
-        <div className="vibe-grid">
-          {VIBES.map(v => (
-            <div key={v}
-              className={`vibe-pill ${form.vibes.includes(v)?"selected":""} ${!form.vibes.includes(v)&&form.vibes.length>=3?"disabled":""}`}
-              onClick={() => toggleVibe(v)}>
-              {v}
-            </div>
-          ))}
-        </div>
-        <div className="field-hint">{form.vibes.length}/3 selected</div>
-      </div>
-      <div className="field">
-        <label>Or add your own</label>
-        <div className="custom-vibe-row">
-          <input className="custom-vibe-input" value={form.customVibe} onChange={e => upd("customVibe",e.target.value)}
-            onKeyDown={e => e.key==="Enter" && addCustomVibe()}
-            placeholder="Type a vibe and press Add..."
-            disabled={form.vibes.length >= 3} />
-          <button className="custom-vibe-add" onClick={addCustomVibe} disabled={form.vibes.length >= 3}>+ Add</button>
-        </div>
-        {form.vibes.length > 0 && (
-          <div style={{ display:"flex",flexWrap:"wrap",gap:8,marginTop:12 }}>
-            {form.vibes.map(v => (
-              <div key={v} className="vibe-pill selected" style={{ display:"flex",alignItems:"center",gap:6 }}>
-                {v}
-                <span onClick={() => toggleVibe(v)} style={{ cursor:"pointer",opacity:0.6,fontSize:11 }}>✕</span>
+        {form.genres.length > 0 && (
+          <div style={{ display:"flex",gap:8,flexWrap:"wrap",marginTop:12 }}>
+            {form.genres.map(g => (
+              <div key={g} className="vibe-pill selected" style={{ display:"flex",alignItems:"center",gap:6 }}>
+                {g}<span onClick={() => toggleGenre(g)} style={{ cursor:"pointer",opacity:0.6,fontSize:11 }}>✕</span>
               </div>
             ))}
           </div>
         )}
       </div>
-      <div className="field" style={{ marginTop:4 }}>
-        <label>City</label>
-        <input value={form.city} onChange={e => upd("city",e.target.value)} placeholder="e.g. Nashville, TN" />
-      </div>
-    </>,
 
-    // 3: Your Profile
-    <>
-      <div className="onboarding-title">Build your profile</div>
-      <div className="onboarding-sub">All optional — but the more you add, the more fans connect with you.</div>
-
-      {/* Photos */}
-      <div className="photo-upload-row">
-        <div className="photo-upload-box" style={{ maxWidth:100 }} onClick={() => document.getElementById('profilePhotoInput').click()}>
-          {form.profilePhoto
-            ? <img src={form.profilePhoto} className="photo-preview" alt="profile" style={{height:80,width:80,borderRadius:'50%',objectFit:'cover'}} />
-            : <><div className="upload-icon">🎭</div><div className="upload-title">Photo</div><div className="upload-label">Tap to upload</div></>}
-          <input id="profilePhotoInput" type="file" accept="image/*" style={{display:'none'}} onChange={e => { const f=e.target.files[0]; if(f){const r=new FileReader();r.onload=ev=>upd('profilePhoto',ev.target.result);r.readAsDataURL(f);} }} />
+      {/* ── Section 3: Vibe & City ─── */}
+      <div style={{ background:"var(--surface)",border:"1px solid var(--border)",borderRadius:16,padding:28,marginBottom:16 }}>
+        <SectionHeader emoji="✨" title="Vibe & City" subtitle="Pick up to 3 vibes that describe your style." />
+        <div className="vibe-grid" style={{ marginBottom:12 }}>
+          {VIBES.map(v => (
+            <div key={v} className={`vibe-pill ${form.vibes.includes(v)?"selected":""} ${!form.vibes.includes(v)&&form.vibes.length>=3?"disabled":""}`}
+              onClick={() => toggleVibe(v)}>{v}</div>
+          ))}
         </div>
-        <div className="photo-upload-box" onClick={() => document.getElementById('bannerInput').click()}>
-          {form.bannerImage
-            ? <img src={form.bannerImage} className="banner-preview" alt="banner" style={{width:'100%',height:80,objectFit:'cover',borderRadius:8}} />
-            : <><div className="upload-icon">🖼️</div><div className="upload-title">Banner Image</div><div className="upload-label">Appears at the top of your page</div></>}
-          <input id="bannerInput" type="file" accept="image/*" style={{display:'none'}} onChange={e => { const f=e.target.files[0]; if(f){const r=new FileReader();r.onload=ev=>upd('bannerImage',ev.target.result);r.readAsDataURL(f);} }} />
+        <div className="field-hint" style={{ marginBottom:10 }}>{form.vibes.length}/3 selected</div>
+        <div className="custom-vibe-row" style={{ marginBottom: form.vibes.length > 0 ? 10 : 0 }}>
+          <input className="custom-vibe-input" value={form.customVibe} onChange={e => upd("customVibe",e.target.value)}
+            onKeyDown={e => e.key==="Enter" && addCustomVibe()}
+            placeholder="Or type your own vibe..." disabled={form.vibes.length >= 3} />
+          <button className="custom-vibe-add" onClick={addCustomVibe} disabled={form.vibes.length >= 3}>+ Add</button>
         </div>
-      </div>
-
-      {/* Date Formed + Label */}
-      <div style={{ display:'flex', gap:10, marginTop:4 }}>
-        <div className="field" style={{ flex:1 }}>
-          <label>Date Formed <span style={{color:'var(--muted)',fontWeight:400,fontSize:11}}>(optional)</span></label>
-          <input value={form.dateFormed} onChange={e => upd('dateFormed',e.target.value)} placeholder="e.g. 2018 or March 2019" />
-        </div>
-        <div className="field" style={{ flex:1 }}>
-          <label>Label <span style={{color:'var(--muted)',fontWeight:400,fontSize:11}}>(optional)</span></label>
-          <input value={form.label} onChange={e => upd('label',e.target.value)} placeholder="e.g. Independent" />
+        {form.vibes.length > 0 && (
+          <div style={{ display:"flex",gap:8,flexWrap:"wrap",marginBottom:16 }}>
+            {form.vibes.map(v => (
+              <div key={v} className="vibe-pill selected" style={{ display:"flex",alignItems:"center",gap:6 }}>
+                {v}<span onClick={() => toggleVibe(v)} style={{ cursor:"pointer",opacity:0.6,fontSize:11 }}>✕</span>
+              </div>
+            ))}
+          </div>
+        )}
+        <div className="field" style={{ marginBottom:0 }}>
+          <label>City</label>
+          <input value={form.city} onChange={e => upd("city",e.target.value)} placeholder="e.g. Nashville, TN" />
         </div>
       </div>
 
-      {/* Band Members */}
-      <div className="section-label"><span>👥</span> Band Members <span style={{fontSize:11,color:'var(--muted)',fontWeight:400,marginLeft:4}}>(optional)</span></div>
-      {form.bandMembers.map((m,i) => (
-        <div key={i} className="member-row">
-          <input value={m.name} onChange={e => { const arr=[...form.bandMembers]; arr[i]={...arr[i],name:e.target.value}; upd('bandMembers',arr); }} placeholder="Name" />
-          <input value={m.role} onChange={e => { const arr=[...form.bandMembers]; arr[i]={...arr[i],role:e.target.value}; upd('bandMembers',arr); }} placeholder="Role (e.g. Guitar)" />
-          {form.bandMembers.length > 1 && <button className="icon-btn danger" onClick={() => upd('bandMembers', form.bandMembers.filter((_,j)=>j!==i))}>✕</button>}
-        </div>
-      ))}
-      <button className="icon-btn" style={{width:'auto',padding:'0 14px',fontSize:13,gap:6,display:'flex',alignItems:'center'}} onClick={() => upd('bandMembers',[...form.bandMembers,{name:'',role:''}])}>+ Add Member</button>
+      {/* ── Section 4: Your Profile ─── */}
+      <div style={{ background:"var(--surface)",border:"1px solid var(--border)",borderRadius:16,padding:28,marginBottom:16 }}>
+        <SectionHeader emoji="🎭" title="Your Profile" subtitle="Photos, history, and links. All optional." optional />
 
-      {/* Fan Benefits */}
-      <div className="section-label"><span>🎁</span> Fan Benefits <span style={{fontSize:11,color:'var(--muted)',fontWeight:400,marginLeft:4}}>(optional)</span></div>
-      <div style={{fontSize:12,color:'var(--muted)',marginBottom:10}}>What do fans get? e.g. "Early access to new releases", "Annual private show for top 100 fans"</div>
-      {form.fanBenefits.map((b,i) => (
-        <div key={i} className="benefit-row">
-          <input value={b} onChange={e => { const arr=[...form.fanBenefits]; arr[i]=e.target.value; upd('fanBenefits',arr); }} placeholder={`Benefit ${i+1}`} />
-          {form.fanBenefits.length > 1 && <button className="icon-btn danger" onClick={() => upd('fanBenefits', form.fanBenefits.filter((_,j)=>j!==i))}>✕</button>}
+        {/* Photos */}
+        <div className="photo-upload-row" style={{ marginBottom:16 }}>
+          <div className="photo-upload-box" style={{ maxWidth:110 }} onClick={() => document.getElementById('profilePhotoInput').click()}>
+            {form.profilePhoto
+              ? <img src={form.profilePhoto} alt="profile" style={{width:80,height:80,borderRadius:'50%',objectFit:'cover'}} />
+              : <><div className="upload-icon">🎭</div><div className="upload-title">Photo</div><div className="upload-label">Tap to upload</div></>}
+            <input id="profilePhotoInput" type="file" accept="image/*" style={{display:'none'}}
+              onChange={e => { const f=e.target.files[0]; if(f){const r=new FileReader();r.onload=ev=>upd('profilePhoto',ev.target.result);r.readAsDataURL(f);} }} />
+          </div>
+          <div className="photo-upload-box" onClick={() => document.getElementById('bannerInput').click()}>
+            {form.bannerImage
+              ? <img src={form.bannerImage} alt="banner" style={{width:'100%',height:80,objectFit:'cover',borderRadius:8}} />
+              : <><div className="upload-icon">🖼️</div><div className="upload-title">Banner Image</div><div className="upload-label">Appears at the top of your page</div></>}
+            <input id="bannerInput" type="file" accept="image/*" style={{display:'none'}}
+              onChange={e => { const f=e.target.files[0]; if(f){const r=new FileReader();r.onload=ev=>upd('bannerImage',ev.target.result);r.readAsDataURL(f);} }} />
+          </div>
         </div>
-      ))}
-      <button className="icon-btn" style={{width:'auto',padding:'0 14px',fontSize:13,gap:6,display:'flex',alignItems:'center'}} onClick={() => upd('fanBenefits',[...form.fanBenefits,''])}>+ Add Benefit</button>
 
-      {/* Streaming & Social Links */}
-      <div className="section-label"><span>🔗</span> Streaming & Social Links <span style={{fontSize:11,color:'var(--muted)',fontWeight:400,marginLeft:4}}>(optional)</span></div>
-      <div className="links-grid">
-        {[
-          {key:'spotify', label:'Spotify', icon:'🎵', placeholder:'open.spotify.com/...'},
-          {key:'appleMusic', label:'Apple Music', icon:'🍎', placeholder:'music.apple.com/...'},
-          {key:'youtube', label:'YouTube', icon:'▶️', placeholder:'youtube.com/...'},
-          {key:'instagram', label:'Instagram', icon:'📸', placeholder:'instagram.com/...'},
-          {key:'tiktok', label:'TikTok', icon:'🎶', placeholder:'tiktok.com/@...'},
-          {key:'x', label:'X / Twitter', icon:'✖️', placeholder:'x.com/...'},
-          {key:'soundcloud', label:'SoundCloud', icon:'☁️', placeholder:'soundcloud.com/...'},
-          {key:'bandcamp', label:'Bandcamp', icon:'🏕️', placeholder:'bandcamp.com/...'},
-        ].map(({key,label,icon,placeholder}) => (
-          <div key={key} className="link-field">
-            <label><span>{icon}</span>{label}</label>
-            <input value={form.links[key]} onChange={e => upd('links',{...form.links,[key]:e.target.value})} placeholder={placeholder} style={{fontSize:12}} />
+        {/* Profile Icon & Colors */}
+        <div className="field">
+          <label>Profile Icon</label>
+          <div style={{ display:"flex",gap:10,flexWrap:"wrap" }}>
+            {EMOJIS.map(e => (
+              <div key={e} onClick={() => upd("profileEmoji",e)}
+                style={{ width:44,height:44,borderRadius:"50%",background:"var(--surface2)",border:`2px solid ${form.profileEmoji===e?"var(--accent)":"var(--border)"}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,cursor:"pointer",transition:"all 0.15s" }}>
+                {e}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginBottom:16 }}>
+          <div className="field" style={{ marginBottom:0 }}>
+            <label>Cover Color</label>
+            <div style={{ display:"flex",gap:8,flexWrap:"wrap" }}>
+              {COLORS.map(c => <div key={c} onClick={() => upd("coverColor",c)} style={{ width:34,height:34,borderRadius:8,background:c,border:`2px solid ${form.coverColor===c?"var(--accent)":"transparent"}`,cursor:"pointer" }} />)}
+            </div>
+          </div>
+          <div className="field" style={{ marginBottom:0 }}>
+            <label>Accent Color</label>
+            <div style={{ display:"flex",gap:8,flexWrap:"wrap" }}>
+              {ACCENTS.map(c => <div key={c} onClick={() => upd("accentColor",c)} style={{ width:34,height:34,borderRadius:8,background:c,border:`2px solid ${form.accentColor===c?"var(--accent)":"transparent"}`,cursor:"pointer" }} />)}
+            </div>
+          </div>
+        </div>
+
+        {/* Date Formed + Label */}
+        <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginBottom:16 }}>
+          <div className="field" style={{ marginBottom:0 }}>
+            <label>Date Formed</label>
+            <input value={form.dateFormed} onChange={e => upd('dateFormed',e.target.value)} placeholder="e.g. 2018 or March 2019" />
+          </div>
+          <div className="field" style={{ marginBottom:0 }}>
+            <label>Label</label>
+            <input value={form.label} onChange={e => upd('label',e.target.value)} placeholder="e.g. Independent" />
+          </div>
+        </div>
+
+        {/* Band Members */}
+        <div className="section-label"><span>👥</span> Band Members</div>
+        {form.bandMembers.map((m,i) => (
+          <div key={i} className="member-row">
+            <input value={m.name} onChange={e => { const arr=[...form.bandMembers]; arr[i]={...arr[i],name:e.target.value}; upd('bandMembers',arr); }} placeholder="Name" />
+            <input value={m.role} onChange={e => { const arr=[...form.bandMembers]; arr[i]={...arr[i],role:e.target.value}; upd('bandMembers',arr); }} placeholder="Role (e.g. Guitar)" />
+            {form.bandMembers.length > 1 && <button className="icon-btn danger" onClick={() => upd('bandMembers', form.bandMembers.filter((_,j)=>j!==i))}>✕</button>}
           </div>
         ))}
-      </div>
-    </>,
+        <button className="icon-btn" style={{width:'auto',padding:'0 14px',fontSize:13,display:'flex',alignItems:'center',gap:6,marginBottom:16}}
+          onClick={() => upd('bandMembers',[...form.bandMembers,{name:'',role:''}])}>+ Add Member</button>
 
-    // 4: Price
-    <>
-      <div className="onboarding-title">What's your number?</div>
-      <div className="onboarding-sub">This is what fans pay each month to hold their number. You can change it anytime. Most artists start at $5.</div>
-      <div className="price-options">
-        {[3,5,8,10].map(p => (
-          <div key={p} className={`price-opt ${form.price===p?"selected":""}`} onClick={() => upd("price",p)}>
-            <div className="price-opt-val">${p}</div>
-            <div className="price-opt-label">per mo</div>
+        {/* Fan Benefits */}
+        <div className="section-label"><span>🎁</span> Fan Benefits</div>
+        <div style={{fontSize:12,color:"var(--muted)",marginBottom:10}}>What do fans get? e.g. "Early access to new releases"</div>
+        {form.fanBenefits.map((b,i) => (
+          <div key={i} className="benefit-row">
+            <input value={b} onChange={e => { const arr=[...form.fanBenefits]; arr[i]=e.target.value; upd('fanBenefits',arr); }} placeholder={`Benefit ${i+1}`} />
+            {form.fanBenefits.length > 1 && <button className="icon-btn danger" onClick={() => upd('fanBenefits', form.fanBenefits.filter((_,j)=>j!==i))}>✕</button>}
           </div>
         ))}
-      </div>
-      <div className="field">
-        <label>Custom price</label>
-        <input type="number" min={3} max={100} value={form.price} onChange={e => upd("price",Number(e.target.value))} style={{ maxWidth:120 }} />
-        <div className="field-hint">Minimum $3/month · You keep 88%</div>
-      </div>
-      <div style={{ background:"var(--surface2)",border:"1px solid var(--border)",borderRadius:10,padding:"16px 20px",marginTop:16 }}>
-        <div style={{ fontSize:11,color:"var(--muted)",fontFamily:"var(--font-mono)",textTransform:"uppercase",letterSpacing:1,marginBottom:12 }}>If fans invest at ${form.price}/month</div>
-        <div style={{ display:"flex",justifyContent:"space-between",fontSize:14,color:"var(--muted)",marginBottom:8 }}>
-          <span>100 fans</span><span style={{ color:"var(--text)",fontFamily:"var(--font-mono)" }}>${Math.round(form.price*100*0.88).toLocaleString()}/mo to you</span>
-        </div>
-        <div style={{ display:"flex",justifyContent:"space-between",fontSize:14,color:"var(--muted)" }}>
-          <span>500 fans</span><span style={{ color:"var(--accent)",fontFamily:"var(--font-mono)",fontWeight:600 }}>${Math.round(form.price*500*0.88).toLocaleString()}/mo to you</span>
-        </div>
-      </div>
-    </>,
+        <button className="icon-btn" style={{width:'auto',padding:'0 14px',fontSize:13,display:'flex',alignItems:'center',gap:6,marginBottom:16}}
+          onClick={() => upd('fanBenefits',[...form.fanBenefits,''])}>+ Add Benefit</button>
 
-    // 5: Your Look
-    <>
-      <div className="onboarding-title">Your look</div>
-      <div className="onboarding-sub">Choose your profile icon and page colors. You'll be able to upload a real photo after launch.</div>
-      <div className="field">
-        <label>Profile Icon</label>
-        <div style={{ display:"flex",gap:10,flexWrap:"wrap" }}>
-          {EMOJIS.map(e => (
-            <div key={e} onClick={() => upd("profileEmoji",e)}
-              style={{ width:46,height:46,borderRadius:"50%",background:"var(--surface2)",border:`2px solid ${form.profileEmoji===e?"var(--accent)":"var(--border)"}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,cursor:"pointer",transition:"all 0.15s" }}>
-              {e}
+        {/* Links */}
+        <div className="section-label"><span>🔗</span> Streaming & Social Links</div>
+        <div className="links-grid">
+          {[
+            {key:'spotify',label:'Spotify',icon:'🎵',placeholder:'open.spotify.com/...'},
+            {key:'appleMusic',label:'Apple Music',icon:'🍎',placeholder:'music.apple.com/...'},
+            {key:'youtube',label:'YouTube',icon:'▶️',placeholder:'youtube.com/...'},
+            {key:'instagram',label:'Instagram',icon:'📸',placeholder:'instagram.com/...'},
+            {key:'tiktok',label:'TikTok',icon:'🎶',placeholder:'tiktok.com/@...'},
+            {key:'x',label:'X / Twitter',icon:'✖️',placeholder:'x.com/...'},
+            {key:'soundcloud',label:'SoundCloud',icon:'☁️',placeholder:'soundcloud.com/...'},
+            {key:'bandcamp',label:'Bandcamp',icon:'🏕️',placeholder:'bandcamp.com/...'},
+          ].map(({key,label,icon,placeholder}) => (
+            <div key={key} className="link-field">
+              <label><span>{icon}</span>{label}</label>
+              <input value={form.links[key]} onChange={e => upd('links',{...form.links,[key]:e.target.value})} placeholder={placeholder} style={{fontSize:12}} />
             </div>
           ))}
         </div>
       </div>
-      <div className="field-row" style={{ marginTop:16 }}>
-        <div className="field">
-          <label>Cover Color</label>
-          <div style={{ display:"flex",gap:8,flexWrap:"wrap" }}>
-            {COLORS.map(c => <div key={c} onClick={() => upd("coverColor",c)} style={{ width:34,height:34,borderRadius:8,background:c,border:`2px solid ${form.coverColor===c?"var(--accent)":"transparent"}`,cursor:"pointer" }} />)}
-          </div>
-        </div>
-        <div className="field">
-          <label>Accent Color</label>
-          <div style={{ display:"flex",gap:8,flexWrap:"wrap" }}>
-            {ACCENTS.map(c => <div key={c} onClick={() => upd("accentColor",c)} style={{ width:34,height:34,borderRadius:8,background:c,border:`2px solid ${form.accentColor===c?"var(--accent)":"transparent"}`,cursor:"pointer" }} />)}
-          </div>
-        </div>
-      </div>
-      {/* Live mini-preview */}
-      <div style={{ marginTop:20 }}>
-        <div style={{ fontSize:11,color:"var(--muted)",fontFamily:"var(--font-mono)",marginBottom:8,textTransform:"uppercase",letterSpacing:1 }}>Preview</div>
-        <div className="preview-frame">
-          <div className="preview-cover" style={{ background:form.coverColor }}>
-            <div style={{ position:"absolute",inset:0,background:`radial-gradient(circle at 30% 50%, ${form.accentColor}44, transparent 60%)` }} />
-            <div className="preview-avatar">{form.profileEmoji}</div>
-          </div>
-          <div className="preview-info">
-            <div className="preview-name">{form.artistName||"Your Name"}</div>
-            <div className="preview-bio">{form.bio||"Your bio will appear here..."}</div>
-            <div style={{ display:"flex",gap:6,flexWrap:"wrap",marginBottom:4 }}>
-              {form.genres.slice(0,2).map(g => <span key={g} className="tag" style={{borderColor:"var(--accent)",color:"var(--accent)",fontSize:10}}>{g}</span>)}
-            </div>
-            <div style={{ display:"flex",gap:8,flexWrap:"wrap" }}>
-              {form.vibes.slice(0,2).map(v => <span key={v} className="tag">{v}</span>)}
-              {form.city && <span className="tag">📍 {form.city}</span>}
-            </div>
-          </div>
-        </div>
-      </div>
-    </>,
 
-    // 6: Stripe
-    <>
-      <div className="onboarding-title">Connect Stripe</div>
-      <div className="onboarding-sub">This is how you get paid. Stripe handles all payment processing and deposits directly to your bank.</div>
-      <div className="stripe-box">
-        {!form.stripeConnected ? (
-          <>
-            <div className="stripe-logo">STRIPE</div>
-            <div className="stripe-desc">You'll be redirected to Stripe to set up a free account (or connect an existing one). Takes about 3 minutes. Have your bank info and ID handy.</div>
-            <button className="btn btn-primary" style={{ background:"#635bff",marginBottom:16,width:"100%" }} onClick={() => upd("stripeConnected",true)}>Connect with Stripe →</button>
-            <div style={{ fontSize:12,color:"var(--muted)",fontFamily:"var(--font-mono)" }}>You can skip this and connect later, but fans can't claim a number until it's done.</div>
-          </>
-        ) : (
-          <div className="stripe-connected">
-            <span style={{ fontSize:20 }}>✓</span> Stripe account connected
-          </div>
-        )}
+      {/* ── Section 5: Price ─── */}
+      <div style={{ background:"var(--surface)",border:"1px solid var(--border)",borderRadius:16,padding:28,marginBottom:16 }}>
+        <SectionHeader emoji="💰" title="Set Your Price" subtitle="What fans pay each month to hold their number. Most artists start at $5." />
+        <div className="price-options">
+          {[3,5,8,10].map(p => (
+            <div key={p} className={`price-opt ${form.price===p?"selected":""}`} onClick={() => upd("price",p)}>
+              <div className="price-opt-val">${p}</div>
+              <div className="price-opt-label">per mo</div>
+            </div>
+          ))}
+        </div>
+        <div className="field" style={{ marginBottom:8 }}>
+          <label>Custom price</label>
+          <input type="number" min={3} max={100} value={form.price} onChange={e => upd("price",Number(e.target.value))} style={{ maxWidth:120 }} />
+          <div className="field-hint">Minimum $3/month · You keep 88%</div>
+        </div>
+        <div style={{ display:"flex",gap:24,padding:"12px 0",borderTop:"1px solid var(--border)",marginTop:8 }}>
+          <div style={{ fontSize:13,color:"var(--muted)" }}>At 100 fans: <span style={{ color:"var(--text)",fontFamily:"var(--font-mono)" }}>${Math.round(form.price*100*0.88).toLocaleString()}/mo</span></div>
+          <div style={{ fontSize:13,color:"var(--muted)" }}>At 500 fans: <span style={{ color:"var(--accent)",fontFamily:"var(--font-mono)",fontWeight:600 }}>${Math.round(form.price*500*0.88).toLocaleString()}/mo</span></div>
+        </div>
       </div>
-      {!form.stripeConnected && (
-        <button style={{ background:"none",border:"none",color:"var(--muted)",cursor:"pointer",fontSize:13,marginTop:16,fontFamily:"var(--font-body)",textDecoration:"underline" }}
-          onClick={() => setStep(s => s+1)}>Skip for now →</button>
+
+      {/* ── Section 6: Stripe ─── */}
+      <div style={{ background:"var(--surface)",border:"1px solid var(--border)",borderRadius:16,padding:28,marginBottom:32 }}>
+        <SectionHeader emoji="💳" title="Connect Stripe" subtitle="How you get paid. You can connect now or after launch." optional />
+        <div className="stripe-box">
+          {!form.stripeConnected ? (
+            <>
+              <div className="stripe-logo">STRIPE</div>
+              <div className="stripe-desc">You'll be redirected to Stripe to set up a free account (or connect an existing one). Takes about 3 minutes.</div>
+              <button className="btn btn-primary" style={{ background:"#635bff",marginBottom:12,width:"100%" }} onClick={() => upd("stripeConnected",true)}>Connect with Stripe →</button>
+              <div style={{ fontSize:12,color:"var(--muted)",fontFamily:"var(--font-mono)" }}>Fans can see your page without Stripe, but can't claim a number until it's connected.</div>
+            </>
+          ) : (
+            <div className="stripe-connected"><span style={{ fontSize:20 }}>✓</span> Stripe account connected</div>
+          )}
+        </div>
+      </div>
+
+      {/* ── Go Live Button ─── */}
+      {!canGoLive && (
+        <div style={{ background:"rgba(255,204,0,0.08)",border:"1px solid rgba(255,204,0,0.2)",borderRadius:10,padding:"12px 16px",fontSize:13,color:"var(--accent2)",marginBottom:16 }}>
+          ⚠️ Add your artist name and bio to go live
+        </div>
       )}
-    </>,
-
-    // 7: Preview
-    <>
-      <div className="onboarding-title">You're almost live</div>
-      <div className="onboarding-sub">This is what fans see when they land on your page. Happy with it? Everything is editable after launch.</div>
-      <div className="preview-frame" style={{ marginBottom:16 }}>
-        <div className="preview-cover" style={{ background:form.coverColor,height:130 }}>
-          {form.bannerImage
-            ? <img src={form.bannerImage} style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",borderRadius:"12px 12px 0 0",opacity:0.6}} alt="banner" />
-            : <div style={{ position:"absolute",inset:0,background:`radial-gradient(circle at 30% 50%, ${form.accentColor}44, transparent 60%)` }} />}
-          <div className="preview-avatar" style={{ width:72,height:72,fontSize:30 }}>
-            {form.profilePhoto
-              ? <img src={form.profilePhoto} style={{width:72,height:72,borderRadius:'50%',objectFit:'cover',border:`2px solid ${form.accentColor}`}} alt="profile" />
-              : form.profileEmoji}
-          </div>
-        </div>
-        <div className="preview-info" style={{ paddingTop:36 }}>
-          <div className="preview-name">{form.artistName||"Your Artist Name"}</div>
-          {form.dateFormed && <div style={{fontSize:11,color:"var(--muted)",fontFamily:"var(--font-mono)",marginBottom:6}}>Est. {form.dateFormed}{form.label ? ` · ${form.label}` : ""}</div>}
-          <div className="preview-bio">{form.bio||"Your bio appears here."}</div>
-          <div style={{ display:"flex",gap:8,flexWrap:"wrap",marginBottom:6 }}>
-            {form.genres.map(g => <span key={g} className="tag" style={{borderColor:"var(--accent)",color:"var(--accent)"}}>{g}</span>)}
-          </div>
-          <div style={{ display:"flex",gap:8,flexWrap:"wrap",marginBottom:14 }}>
-            {form.vibes.map(v => <span key={v} className="tag">{v}</span>)}
-            {form.city && <span className="tag">📍 {form.city}</span>}
-          </div>
-          {form.fanBenefits.some(b=>b.trim()) && (
-            <div style={{background:"var(--surface2)",border:"1px solid var(--border)",borderRadius:8,padding:"10px 14px",marginBottom:14}}>
-              <div style={{fontSize:11,color:"var(--muted)",fontFamily:"var(--font-mono)",marginBottom:6}}>FAN BENEFITS</div>
-              {form.fanBenefits.filter(b=>b.trim()).map((b,i) => (
-                <div key={i} style={{fontSize:13,color:"var(--text)",display:"flex",gap:8,marginBottom:4}}>
-                  <span style={{color:"var(--accent)"}}>✦</span>{b}
-                </div>
-              ))}
-            </div>
-          )}
-          <div style={{ display:"flex",gap:16,marginBottom:14 }}>
-            <div className="stat"><div className="stat-num">0</div><div className="stat-label">Fans</div></div>
-            <div className="stat"><div className="stat-num">${form.price}</div><div className="stat-label">Per Month</div></div>
-          </div>
-          <button className="btn btn-primary" style={{ background:form.accentColor,width:"100%",fontSize:14 }}>
-            Claim Fan #1 — ${form.price}/month
-          </button>
-          {Object.values(form.links).some(l=>l.trim()) && (
-            <div style={{display:"flex",flexWrap:"wrap",gap:8,marginTop:14}}>
-              {[
-                {key:'spotify',icon:'🎵'},{key:'appleMusic',icon:'🍎'},{key:'youtube',icon:'▶️'},
-                {key:'instagram',icon:'📸'},{key:'tiktok',icon:'🎶'},{key:'x',icon:'✖️'},
-                {key:'soundcloud',icon:'☁️'},{key:'bandcamp',icon:'🏕️'}
-              ].filter(({key})=>form.links[key]?.trim()).map(({key,icon})=>(
-                <span key={key} style={{background:"var(--surface2)",border:"1px solid var(--border)",borderRadius:20,padding:"4px 10px",fontSize:13,cursor:"pointer"}}>{icon}</span>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-      {!form.stripeConnected && (
-        <div style={{ background:"rgba(255,204,0,0.08)",border:"1px solid rgba(255,204,0,0.2)",borderRadius:10,padding:"12px 16px",fontSize:13,color:"var(--accent2)" }}>
+      {!form.stripeConnected && canGoLive && (
+        <div style={{ background:"rgba(255,204,0,0.08)",border:"1px solid rgba(255,204,0,0.2)",borderRadius:10,padding:"12px 16px",fontSize:13,color:"var(--accent2)",marginBottom:16 }}>
           ⚠️ Stripe not connected — fans can see your page but can't claim a number yet
         </div>
       )}
-    </>,
-  ];
-
-  const isLast = step === steps.length - 1;
-
-  return (
-    <div className="onboarding-wrap">
-      <div className="onboarding-card">
-        <div className="step-indicator">
-          {steps.map((_,i) => <div key={i} className={`step-dot ${i===step?"active":i<step?"done":""}`} />)}
-          <div style={{ marginLeft:"auto",fontSize:11,color:"var(--muted)",fontFamily:"var(--font-mono)" }}>{step+1} / {steps.length}</div>
-        </div>
-        {steps[step]}
-        <div className="onboarding-footer">
-          <button style={{ background:"none",border:"none",color:"var(--muted)",cursor:"pointer",fontFamily:"var(--font-body)",fontSize:14,padding:0 }}
-            onClick={() => step===0 ? setPage("artist-landing") : setStep(s=>s-1)}>
-            {step===0 ? "← Back" : "← Previous"}
-          </button>
-          <div style={{ fontSize:11,color:"var(--muted)",fontFamily:"var(--font-mono)" }}>{STEP_LABELS[step]}</div>
-          <button className="btn btn-primary btn-sm"
-            disabled={!canAdvance() && step!==1 && step!==3}
-            style={{ opacity:!canAdvance()&&step!==1&&step!==3?0.4:1,cursor:!canAdvance()&&step!==1&&step!==3?"not-allowed":"pointer" }}
-            onClick={() => { if(isLast){ onArtistCreated(form); setPage("artist-live"); } else { setStep(s=>s+1); } }}>
-            {isLast ? "Go Live 🚀" : "Continue →"}
-          </button>
-        </div>
-      </div>
+      <button className="btn btn-primary"
+        disabled={!canGoLive}
+        style={{ width:"100%",fontSize:18,padding:"18px",opacity:canGoLive?1:0.4,cursor:canGoLive?"pointer":"not-allowed" }}
+        onClick={() => { if(canGoLive){ onArtistCreated(form); setPage("artist-live"); } }}>
+        Go Live 🚀
+      </button>
     </div>
   );
 }
+
 
 // ─── You're Live Page ─────────────────────────────────────────────────────────
 function ArtistLivePage({ artistForm, setPage }) {
